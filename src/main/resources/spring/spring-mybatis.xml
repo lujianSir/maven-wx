@@ -40,4 +40,7 @@
         <!--扫描dao接口-->
         <property name="basePackage" value="com.jenkin.wx.dao"/>
     </bean>
+    
+    
+    <bean id="beanDefineConfigue" class="com.jenkin.wx.util.WXinit"></bean> 
 </beans>

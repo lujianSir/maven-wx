@@ -1,7 +1,8 @@
 package com.jenkin.wx.util;
 
-import com.alibaba.fastjson.JSONObject;
-import com.jenkin.wx.pojo.AccessToken;
+import java.io.IOException;
+import java.nio.charset.Charset;
+
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -10,8 +11,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
+import com.alibaba.fastjson.JSONObject;
+import com.jenkin.wx.pojo.AccessToken;
 
 /**
  * @author: jenkinwang
@@ -20,13 +21,13 @@ import java.nio.charset.Charset;
  */
 public class CommonUtil {
     // 你账号的APPID
-    private static final String APPID = "wx8f4c6ebb6b6d7bfa";
+	public static  String APPID;
 
     // 你账号的APPSECRET
-    private static final String APPSECRET = "cc7a3089e5da291a3317be5e0587fa01";
+	public static  String APPSECRET;
 
     // 获取access_token的URL
-    private static final String ACCESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + APPID + "&secret=" + APPSECRET;
+	private static final String ACCESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APP_ID&secret=APP_SECRET";
 
     // 创建菜单URL
     private static final String CREATE_MENU_URL = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN";
@@ -158,7 +159,8 @@ public class CommonUtil {
      * @throws IOException
      */
     public static AccessToken getAccessToken() throws IOException {
-        JSONObject json = httpRequest(ACCESS_TOKEN_URL, "GET", null);
+		String access_tokenurl = ACCESS_TOKEN_URL.replace("APP_ID", APPID).replace("APP_SECRET", APPSECRET);
+		JSONObject json = httpRequest(access_tokenurl, "GET", null);
         AccessToken accessToken = new AccessToken();
         accessToken.setAccess_token(json.get("access_token").toString());
         accessToken.setExpires_in(json.get("expires_in").toString());

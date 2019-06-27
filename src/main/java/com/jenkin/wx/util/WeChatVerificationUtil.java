@@ -10,7 +10,8 @@ import java.util.Arrays;
  * @description:
  */
 public class WeChatVerificationUtil {
-	private static final String TOKEN = "lujian_wx";
+
+	public static String TOKEN;
 
     public static String verificateWX(String timestamp, String nonce) throws NoSuchAlgorithmException {
 

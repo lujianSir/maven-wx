@@ -84,6 +84,14 @@ public class WeChatController {
         return accessToken.getAccess_token();
     }
 
+	/**
+	 * 页面端上传微信菜单
+	 * 
+	 * @param request
+	 * @param menu
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping(value = "/insertWxMenu")
 	public JsonResult updateWxMenu(HttpServletRequest request, String menu) throws Exception {
@@ -95,6 +103,22 @@ public class WeChatController {
 		} else {
 			mString = "error code : " + msgCode;
 		}
+		return new JsonResult(JsonResult.SUCCESS_CODE, "授权成功", mString);
+	}
+
+	/**
+	 * 获取微信菜单
+	 * 
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/getWxMenu")
+	public JsonResult getWxMenu(HttpServletRequest request) throws Exception {
+		String mString = "";
+		String accessToken = queryLatestAccessToken();
+		mString = CommonUtil.getMenu(accessToken);
 		return new JsonResult(JsonResult.SUCCESS_CODE, "授权成功", mString);
 	}
 

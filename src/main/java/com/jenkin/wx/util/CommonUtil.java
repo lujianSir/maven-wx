@@ -1,7 +1,12 @@
 package com.jenkin.wx.util;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.charset.Charset;
+import java.text.ParseException;
 
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -31,6 +36,9 @@ public class CommonUtil {
 
     // 创建菜单URL
     private static final String CREATE_MENU_URL = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN";
+
+	// 获取菜单URL
+	private static final String GET_MENU_URL = "https://api.weixin.qq.com/cgi-bin/menu/get?access_token=ACCESS_TOKEN";
 
     // 删除菜单URL
     private static final String DELETE_MENU_RUL = "https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=ACCESS_TOKEN";
@@ -82,6 +90,42 @@ public class CommonUtil {
         return json;
     }
 
+	public static String sendGet(String url) throws java.text.ParseException {
+		String result = "";
+		BufferedReader in = null;
+		try {
+
+			URL realUrl = new URL(url);
+			// 打开和URL之间的连接
+			URLConnection conn = realUrl.openConnection();
+			// 设置通用的请求属性
+			conn.setRequestProperty("accept", "*/*");
+			conn.setRequestProperty("connection", "Keep-Alive");
+			conn.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)");
+			// 建立实际的连接
+			conn.connect();
+			// 获取所有响应头字段
+			in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
+			String line;
+			while ((line = in.readLine()) != null) {
+				result += line;
+			}
+		} catch (Exception e) {
+
+		}
+		// 使用finally块来关闭输入流
+		finally {
+			try {
+				if (in != null) {
+					in.close();
+				}
+			} catch (IOException e) {
+
+			}
+		}
+		return result;
+	}
+
     /**
      * 创建菜单
      * @return
@@ -98,6 +142,25 @@ public class CommonUtil {
         }
         return result;
     }
+
+	/**
+	 * 获取菜单
+	 * 
+	 * @param accessToken
+	 * @return
+	 * @throws IOException
+	 */
+	public static String getMenu(String accessToken) throws IOException {
+		String result = "";
+		String getUrl = GET_MENU_URL.replace("ACCESS_TOKEN", accessToken);
+		try {
+			result = sendGet(getUrl);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
 
     /**
      * 删除菜单，包括个性化菜单

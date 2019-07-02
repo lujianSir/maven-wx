@@ -12,9 +12,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jenkin.wx.pojo.AccessToken;
+import com.jenkin.wx.pojo.JsonResult;
 import com.jenkin.wx.service.WeChatService;
 import com.jenkin.wx.util.CommonUtil;
 import com.jenkin.wx.util.DateUtil;
@@ -82,11 +84,26 @@ public class WeChatController {
         return accessToken.getAccess_token();
     }
 
+	@ResponseBody
+	@RequestMapping(value = "/insertWxMenu")
+	public JsonResult updateWxMenu(HttpServletRequest request, String menu) throws Exception {
+		String mString;
+		String accessToken = queryLatestAccessToken();
+		int msgCode = CommonUtil.createMenu(accessToken, menu);
+		if (msgCode == 0) {
+			mString = "create menu success";
+		} else {
+			mString = "error code : " + msgCode;
+		}
+		return new JsonResult(JsonResult.SUCCESS_CODE, "授权成功", mString);
+	}
+
     /**
-     * 创建菜单
-     * @param response
-     * @throws IOException
-     */
+	 * 创建菜单
+	 * 
+	 * @param response
+	 * @throws IOExceptionj
+	 */
     @RequestMapping(value = "/createMenu", method = RequestMethod.GET)
     public void createMenu(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.setCharacterEncoding("UTF-8");

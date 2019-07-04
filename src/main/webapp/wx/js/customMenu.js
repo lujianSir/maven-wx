@@ -1435,11 +1435,8 @@ $(function () {
     let data = {
         "list": [ {
             "id": "wx6d464222e2572d67",
-            "text": "GYVW"
-        }, {"id": "wxa40fd733fd63e57b", "text": "kx"}, {
-            "id": "wxc2c420fe6bf447fe",
-            "text": "半个柠檬c"
-        }, {"id": "wxd2a2b89fae362185", "text": "fans"}]
+            "text": "微信公众号菜单"
+        }]
     }
 
     var str = "";

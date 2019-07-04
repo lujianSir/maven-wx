@@ -49,6 +49,15 @@ public class CommonUtil {
     // 删除个性化菜单
     private static final String DELETE_INDIVIDUAL_MENU_URL = "https://api.weixin.qq.com/cgi-bin/menu/delconditional?access_token=ACCESS_TOKEN";
 
+	// 获取网页授权accessToken的接口
+	private static final String GET_WEB_ACCESSTOKEN_URL = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code";
+
+	// 获取用户信息的接口
+	private static final String GET_USERINFO_URL = "https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN";
+
+	// 获取用户授权
+	private static final String GET_CODE_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect";
+
     /**
      * GET、POST请求
      * @param url
@@ -229,5 +238,41 @@ public class CommonUtil {
         accessToken.setExpires_in(json.get("expires_in").toString());
         return accessToken;
     }
+
+	/**
+	 * 获取网页授权的AccessToken凭据
+	 * 
+	 * @return
+	 */
+	public static JSONObject getWebAccessToken(String code) {
+		String webAccessToken = GET_WEB_ACCESSTOKEN_URL.replace("APPID", APPID).replace("SECRET", APPSECRET)
+				.replace("CODE", code);
+		String result = "";
+		try {
+			result = sendGet(webAccessToken);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		JSONObject json = JSONObject.parseObject(result);
+		return json;
+	}
+
+	/**
+	 * 获取用户信息
+	 *
+	 */
+	public static JSONObject getUserInfo(String accessToken, String openId) {
+		String getUserInfo = GET_USERINFO_URL.replace("ACCESS_TOKEN", accessToken).replace("OPENID", openId);
+		String result = "";
+		try {
+			result = sendGet(getUserInfo);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		JSONObject json = JSONObject.parseObject(result);
+		return json;
+	}
 
 }

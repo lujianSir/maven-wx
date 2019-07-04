@@ -33,6 +33,7 @@ public class WXcodeController {
 				+ URLEncoder.encode(backUrl) + "&response_type=code" + "&scope=snsapi_userinfo"
 				+ "&state=STATE#wechat_redirect";
 
+		System.out.println(url);
 		// 重定向到授权页面
 		response.sendRedirect(url);
 	}

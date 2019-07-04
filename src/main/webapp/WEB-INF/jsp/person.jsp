@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<div class="weui-cells mt5">
+	<div class="weui-cells mt5" style="font-size: 45px;">
               <div class="weui-cell ">
                 <div class="weui-cell__bd">
                	   昵称
@@ -39,7 +39,10 @@
                           	  男
                         </c:when>
                     </c:choose>
-                </div>              
+                </div>  
+                <div>
+                	<img alt="微信公众号图片" src="${headimgurl}">
+                </div>            
               </div>
  
  

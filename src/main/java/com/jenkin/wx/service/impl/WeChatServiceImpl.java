@@ -1,16 +1,23 @@
 package com.jenkin.wx.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
-import com.jenkin.wx.dao.WeChatDao;
-import com.jenkin.wx.pojo.AccessToken;
-import com.jenkin.wx.pojo.message.*;
-import com.jenkin.wx.service.WeChatService;
-import com.jenkin.wx.util.DateUtil;
-import com.jenkin.wx.util.WeChatMessageUtil;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
+import com.alibaba.fastjson.JSONObject;
+import com.jenkin.wx.dao.WeChatDao;
+import com.jenkin.wx.pojo.AccessToken;
+import com.jenkin.wx.pojo.message.Image;
+import com.jenkin.wx.pojo.message.ImageMessage;
+import com.jenkin.wx.pojo.message.TextMessage;
+import com.jenkin.wx.pojo.message.Video;
+import com.jenkin.wx.pojo.message.VideoMessage;
+import com.jenkin.wx.pojo.message.Voice;
+import com.jenkin.wx.pojo.message.VoiceMessage;
+import com.jenkin.wx.service.WeChatService;
+import com.jenkin.wx.util.DateUtil;
+import com.jenkin.wx.util.WeChatMessageUtil;
 
 /**
  * @author: jenkinwang
@@ -36,7 +43,7 @@ public class WeChatServiceImpl implements WeChatService {
     @Override
     public String handleWeChatMessage(HttpServletRequest request) {
         String response = "";
-
+		String url2 = request.getScheme() + "://" + request.getServerName();// +request.getRequestURI();
         JSONObject jsonObject = WeChatMessageUtil.xmlToJson(request);
         String ToUserName = jsonObject.get("ToUserName").toString();
         String FromUserName = jsonObject.get("FromUserName").toString();
@@ -100,7 +107,7 @@ public class WeChatServiceImpl implements WeChatService {
                 textMessage.setFromUserName(ToUserName);
                 textMessage.setCreateTime(DateUtil.getCurrentMillis()/1000);
                 textMessage.setMsgType(WeChatMessageUtil.MESSAGE_TEXT);
-                textMessage.setContent("亲，您终于来了!感谢您的关注!!!");
+				textMessage.setContent("点击获取用户信息" + url2 + "/WeChatOfficialAccount/code/getWXCode");
 
                 response = WeChatMessageUtil.toXml(textMessage);
             } else if (WeChatMessageUtil.MESSAGE_SCAN_EVENT.equals(Event)) {

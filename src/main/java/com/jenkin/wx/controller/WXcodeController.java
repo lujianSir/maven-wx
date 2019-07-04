@@ -24,7 +24,8 @@ public class WXcodeController {
 		// 回调地址
 		// String backUrl = "http://suliu.free.ngrok.cc/WxAuth/callBack";
 		// //第1种情况使用
-		backUrl = "http://8uuuv6.natappfree.cc/WeChatOfficialAccount/user/getperson";//
+		// backUrl =
+		// "http://8uuuv6.natappfree.cc/WeChatOfficialAccount/user/getperson";//
 		// 第2种情况使用，这里是web.xml中的路径
 
 		// 授权页面地址

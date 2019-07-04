@@ -107,7 +107,8 @@ public class WeChatServiceImpl implements WeChatService {
                 textMessage.setFromUserName(ToUserName);
                 textMessage.setCreateTime(DateUtil.getCurrentMillis()/1000);
                 textMessage.setMsgType(WeChatMessageUtil.MESSAGE_TEXT);
-				textMessage.setContent("点击获取用户信息" + url2 + "/WeChatOfficialAccount/code/getWXCode");
+				textMessage.setContent("点击获取用户信息" + url2 + "/WeChatOfficialAccount/code/getWXCode?backUrl=" + url2
+						+ "/WeChatOfficialAccount/user/getperson");
 
                 response = WeChatMessageUtil.toXml(textMessage);
             } else if (WeChatMessageUtil.MESSAGE_SCAN_EVENT.equals(Event)) {

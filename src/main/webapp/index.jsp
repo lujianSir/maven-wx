@@ -22,8 +22,12 @@
 </head>
 <body>
 	<div class="container-fluid" style="text-align: center;">
-  		<div class="row">
-  		
+		<div class="row">
+			<div class="col-md-6">获取用户授权信息</div>
+  			<div class="col-md-6"><input type="button" onclick="getUserMessage()" value="获取授权信息" > </div>
+		</div>
+	
+  		<div class="row"> 		
   			<div class="col-md-6">点击跳转到上传图片的页面</div>
   			<div class="col-md-6"><input type="button" onclick="jumpImg()" value="跳转图片地址" ></div>
   				 	
@@ -38,6 +42,11 @@
 </html>
 
 <script type="text/javascript">
+	function getUserMessage(){
+		var returnUrl="http://"+window.location.host+"/WeChatOfficialAccount/user/getperson";
+		var url="http://"+window.location.host+"/WeChatOfficialAccount/code/getWXCode?backUrl="+returnUrl+"";
+		window.location.href=url;
+	}
 	function jumpImg(){
 		window.location.href='<%=request.getContextPath()%>/getImage';
 	}

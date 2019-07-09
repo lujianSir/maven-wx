@@ -22,6 +22,14 @@ public class WXImageController {
 	@Autowired
 	private WeChatService weChatService;
 
+	/**
+	 * 上传图片
+	 * 
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping("/getImage")
 	public ModelAndView getImage(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		ModelAndView modelAndView = new ModelAndView();
@@ -51,4 +59,22 @@ public class WXImageController {
 		return imgPrevPath;
 	}
 
+	/**
+	 * 上传图片
+	 * 
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/getlocation")
+	public ModelAndView getlocation(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		ModelAndView modelAndView = new ModelAndView();
+		String accessToken = weChatService.getAccessToken();
+		Map<String, Object> map = CommonUtil.getJsapiConfig(request, accessToken);
+		modelAndView.addObject("wxsign", map);
+		modelAndView.setViewName("getlocation");
+		System.out.println(map);
+		return modelAndView;
+	}
 }

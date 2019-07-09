@@ -41,6 +41,11 @@
 			<div class="col-md-6">点击跳转到可以分享的页面</div>
   			<div class="col-md-6"><input type="button" onclick="jumpShare()" value="跳转分享地址" > </div>
 		</div>
+		
+		<div class="row">
+			<div class="col-md-6">点击跳转到录音的页面</div>
+  			<div class="col-md-6"><input type="button" onclick="jumpRecord()" value="跳转录音地址" > </div>
+		</div>
 	</div>
 
 </body>
@@ -60,5 +65,8 @@
 	}
 	function jumpShare(){
 		window.location.href='<%=request.getContextPath()%>/share';
+	}
+	function jumpRecord(){
+		window.location.href='<%=request.getContextPath()%>/getRecord';
 	}
 </script>

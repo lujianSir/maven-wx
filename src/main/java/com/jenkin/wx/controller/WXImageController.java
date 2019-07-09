@@ -60,7 +60,7 @@ public class WXImageController {
 	}
 
 	/**
-	 * 上传图片
+	 * 获取地理位置
 	 * 
 	 * @param request
 	 * @param response
@@ -74,6 +74,44 @@ public class WXImageController {
 		Map<String, Object> map = CommonUtil.getJsapiConfig(request, accessToken);
 		modelAndView.addObject("wxsign", map);
 		modelAndView.setViewName("getlocation");
+		System.out.println(map);
+		return modelAndView;
+	}
+
+	/**
+	 * 录音
+	 * 
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/getRecord")
+	public ModelAndView getRecord(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		ModelAndView modelAndView = new ModelAndView();
+		String accessToken = weChatService.getAccessToken();
+		Map<String, Object> map = CommonUtil.getJsapiConfig(request, accessToken);
+		modelAndView.addObject("wxsign", map);
+		modelAndView.setViewName("getRecord");
+		System.out.println(map);
+		return modelAndView;
+	}
+
+	/**
+	 * 分享功能
+	 * 
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/share")
+	public ModelAndView share(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		ModelAndView modelAndView = new ModelAndView();
+		String accessToken = weChatService.getAccessToken();
+		Map<String, Object> map = CommonUtil.getJsapiConfig(request, accessToken);
+		modelAndView.addObject("wxsign", map);
+		modelAndView.setViewName("share");
 		System.out.println(map);
 		return modelAndView;
 	}

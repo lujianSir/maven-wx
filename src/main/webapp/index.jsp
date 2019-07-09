@@ -36,6 +36,11 @@
 			<div class="col-md-6">点击跳转到获取地理位置的页面</div>
   			<div class="col-md-6"><input type="button" onclick="jumpLocation()" value="跳转位置地址" > </div>
 		</div>
+		
+		<div class="row">
+			<div class="col-md-6">点击跳转到可以分享的页面</div>
+  			<div class="col-md-6"><input type="button" onclick="jumpShare()" value="跳转分享地址" > </div>
+		</div>
 	</div>
 
 </body>
@@ -52,5 +57,8 @@
 	}
 	function jumpLocation(){
 		window.location.href='<%=request.getContextPath()%>/getlocation';
+	}
+	function jumpShare(){
+		window.location.href='<%=request.getContextPath()%>/share';
 	}
 </script>

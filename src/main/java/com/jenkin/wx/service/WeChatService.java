@@ -1,8 +1,10 @@
 package com.jenkin.wx.service;
 
-import com.jenkin.wx.pojo.AccessToken;
+import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
+
+import com.jenkin.wx.pojo.AccessToken;
 
 /**
  * @author: jenkinwang
@@ -13,7 +15,15 @@ public interface WeChatService {
 
     int insertAccessToken(AccessToken accessToken);
 
-    AccessToken queryLatestAccessToken();
+	AccessToken queryLatestAccessToken();
 
     String handleWeChatMessage(HttpServletRequest request);
+
+	/**
+	 * 获取accesstoken
+	 * 
+	 * @return
+	 * @throws IOException
+	 */
+	String getAccessToken() throws IOException;
 }

@@ -1,12 +1,26 @@
 package com.jenkin.wx.util;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLDecoder;
 import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
+import java.util.Formatter;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -58,6 +72,9 @@ public class CommonUtil {
 	// 获取用户授权
 	private static final String GET_CODE_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect";
 
+	// 2.获取getJsapiTicket的接口地址,有效期为7200秒
+	private static final String GET_JSAPITICKET_URL = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi";
+
     /**
      * GET、POST请求
      * @param url
@@ -99,6 +116,14 @@ public class CommonUtil {
         return json;
     }
 
+	/**
+	 * GET、POST请求
+	 * 
+	 * @param url
+	 * @param method
+	 * @return
+	 * @throws IOException
+	 */
 	public static String sendGet(String url) throws java.text.ParseException {
 		String result = "";
 		BufferedReader in = null;
@@ -133,6 +158,52 @@ public class CommonUtil {
 			}
 		}
 		return result;
+	}
+
+	/**
+	 * GET、POST请求
+	 * 
+	 * @param url
+	 * @param method
+	 * @return
+	 * @throws IOException
+	 */
+	public static JSONObject doGet(String url) throws Exception {
+		JSONObject json = null;
+		String result = "";
+		BufferedReader in = null;
+		try {
+
+			URL realUrl = new URL(url);
+			// 打开和URL之间的连接
+			URLConnection conn = realUrl.openConnection();
+			// 设置通用的请求属性
+			conn.setRequestProperty("accept", "*/*");
+			conn.setRequestProperty("connection", "Keep-Alive");
+			conn.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)");
+			// 建立实际的连接
+			conn.connect();
+			// 获取所有响应头字段
+			in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
+			String line;
+			while ((line = in.readLine()) != null) {
+				result += line;
+			}
+		} catch (Exception e) {
+
+		}
+		// 使用finally块来关闭输入流
+		finally {
+			try {
+				if (in != null) {
+					in.close();
+				}
+			} catch (IOException e) {
+
+			}
+		}
+		json = JSONObject.parseObject(result);
+		return json;
 	}
 
     /**
@@ -275,4 +346,296 @@ public class CommonUtil {
 		return json;
 	}
 
+	/**
+	 * @desc ：2.获取JsapiTicket
+	 * 
+	 * @param accessToken
+	 *            有效凭证
+	 * @return
+	 * @throws Exception
+	 *             String
+	 */
+	public static String getJsapiTicket(String accessToken) throws Exception {
+		// 1.获取请求url
+		String url = GET_JSAPITICKET_URL.replace("ACCESS_TOKEN", accessToken);
+
+		// 2.发起GET请求，获取返回结果
+		JSONObject jsonObject = CommonUtil.doGet(url);
+		// 3.解析结果，获取accessToken
+		String jsapiTicket = "";
+		if (null != jsonObject) {
+			// 4.错误消息处理
+			if (jsonObject.getInteger("errcode") != null && 0 != jsonObject.getInteger("errcode")) {
+				int errCode = jsonObject.getInteger("errcode");
+				String errMsg = jsonObject.getString("errmsg");
+				throw new Exception("error code:" + errCode + ", error message:" + errMsg);
+				// 5.成功获取jsapiTicket
+			} else {
+				jsapiTicket = jsonObject.getString("ticket");
+			}
+		}
+
+		return jsapiTicket;
+	}
+
+	/**
+	 * @desc ： 4.1 生成签名的函数
+	 * 
+	 * @param ticket
+	 *            jsticket
+	 * @param nonceStr
+	 *            随机串，自己定义
+	 * @param timeStamp
+	 *            生成签名用的时间戳
+	 * @param url
+	 *            需要进行免登鉴权的页面地址，也就是执行dd.config的页面地址
+	 * @return
+	 * @throws Exception
+	 *             String
+	 */
+
+	public static String getSign(String jsTicket, String nonceStr, Long timeStamp, String url) throws Exception {
+		String plainTex = "jsapi_ticket=" + jsTicket + "&noncestr=" + nonceStr + "&timestamp=" + timeStamp + "&url="
+				+ url;
+		System.out.println(plainTex);
+		try {
+			MessageDigest crypt = MessageDigest.getInstance("SHA-1");
+			crypt.reset();
+			crypt.update(plainTex.getBytes("UTF-8"));
+			return byteToHex(crypt.digest());
+		} catch (NoSuchAlgorithmException e) {
+			throw new Exception(e.getMessage());
+		} catch (UnsupportedEncodingException e) {
+			throw new Exception(e.getMessage());
+		}
+	}
+
+	/**
+	 * @desc ：4.2 将bytes类型的数据转化为16进制类型
+	 * 
+	 * @param hash
+	 * @return String
+	 */
+	private static String byteToHex(byte[] hash) {
+		Formatter formatter = new Formatter();
+		for (byte b : hash) {
+			formatter.format("%02x", new Object[] { Byte.valueOf(b) });
+		}
+		String result = formatter.toString();
+		formatter.close();
+		return result;
+	}
+
+
+	/**
+	 * 获取时间戳(秒)
+	 */
+	public static String getTimestamp() {
+		return String.valueOf(System.currentTimeMillis() / 1000);
+	}
+
+	/**
+	 * @desc ：4.获取前端jsapi需要的配置参数
+	 * 
+	 * @param request
+	 * @return String
+	 */
+
+	public static Map<String, Object> getJsapiConfig(HttpServletRequest request, String token) {
+
+		// 1.准备好参与签名的字段 // 1.1 url
+
+		// 以http://localhost/test.do?a=b&c=d为例
+		// request.getRequestURL的结果是http://localhost/test.do
+		// request.getQueryString的返回值是a=b&c=d
+
+		String urlString = request.getRequestURL().toString();
+		String queryString = request.getQueryString();
+		String queryStringEncode = null;
+		String url;
+		if (queryString != null) {
+			queryStringEncode = URLDecoder.decode(queryString);
+			url = urlString + "?" + queryStringEncode;
+		} else {
+			url = urlString;
+		}
+
+		// 1.2 noncestr
+		String nonceStr = UUID.randomUUID().toString(); // 随机数 //
+		// 1.3 timestamp
+
+		// 时间戳参数
+		long timeStamp = System.currentTimeMillis() / 1000; //
+		String signedUrl = url;
+
+		String accessToken = null;
+		String ticket = null;
+
+		String signature = null; // 签名
+
+		try { // 1.4 jsapi_ticket
+
+			accessToken = token;
+			ticket = CommonUtil.getJsapiTicket(accessToken);
+
+			// 2.进行签名，获取signature
+			signature = CommonUtil.getSign(ticket, nonceStr, timeStamp, signedUrl);
+
+		} catch (Exception e) { // TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		map.put("accessToken", accessToken);
+		map.put("appId", CommonUtil.APPID);
+		map.put("ticket", ticket);
+		map.put("nonceStr", nonceStr);
+		map.put("timestamp", timeStamp);
+		map.put("signature", signature);
+		return map;
+	}
+
+	/**
+	 * @desc ：4.获取前端jsapi需要的配置参数
+	 * 
+	 * @param request
+	 * @return String
+	 */
+	// public static String getJsapiConfig(HttpServletRequest request, String
+	// token) {
+	//
+	// // 1.准备好参与签名的字段
+	// // 1.1 url
+	// /*
+	// * 以http://localhost/test.do?a=b&c=d为例
+	// * request.getRequestURL的结果是http://localhost/test.do
+	// * request.getQueryString的返回值是a=b&c=d
+	// */
+	// String urlString = request.getRequestURL().toString();
+	// String queryString = request.getQueryString();
+	// String queryStringEncode = null;
+	// String url;
+	// if (queryString != null) {
+	// queryStringEncode = URLDecoder.decode(queryString);
+	// url = urlString + "?" + queryStringEncode;
+	// } else {
+	// url = urlString;
+	// }
+	//
+	// // 1.2 noncestr
+	// String nonceStr = UUID.randomUUID().toString(); // 随机数
+	// // 1.3 timestamp
+	// long timeStamp = System.currentTimeMillis() / 1000; // 时间戳参数
+	//
+	// String signedUrl = url;
+	//
+	// String accessToken = null;
+	// String ticket = null;
+	//
+	// String signature = null; // 签名
+	//
+	// try {
+	// // 1.4 jsapi_ticket
+	//
+	// accessToken = token;
+	// ticket = CommonUtil.getJsapiTicket(accessToken);
+	//
+	// // 2.进行签名，获取signature
+	// signature = CommonUtil.getSign(ticket, nonceStr, timeStamp, signedUrl);
+	//
+	// } catch (Exception e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// }
+	//
+	// String configValue = "{signature:'" + signature + "',noncestr:'" +
+	// nonceStr + "',timestamp:'" + timeStamp
+	// + "',appId:'" + CommonUtil.APPID + "'}";
+	// return configValue;
+	// }
+
+	/**
+	 * 获取临时素材
+	 */
+	private static InputStream getMediaStream(String mediaId, String access_token) throws IOException {
+		String url = "https://api.weixin.qq.com/cgi-bin/media/get";
+		// Map map = WxAccessToken.getSavedAccessToken();
+		// String access_token = (String)map.get("access_token");
+		String params = "access_token=" + access_token + "&media_id=" + mediaId;
+		InputStream is = null;
+		try {
+			String urlNameString = url + "?" + params;
+			URL urlGet = new URL(urlNameString);
+			HttpURLConnection http = (HttpURLConnection) urlGet.openConnection();
+			http.setRequestMethod("GET"); // 必须是get方式请求
+			http.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+			http.setDoOutput(true);
+			http.setDoInput(true);
+			http.connect();
+			// 获取文件转化为byte流
+			is = http.getInputStream();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return is;
+	}
+
+	/**
+	 * 保存图片至服务器
+	 * 
+	 * @param mediaId
+	 * @return 文件名
+	 */
+	public static String saveImageToDisk(String mediaId, String access_token, HttpServletRequest request)
+			throws IOException {
+		 String filename = "";
+		String spath = "";
+	        InputStream inputStream = getMediaStream(mediaId,access_token);
+	        byte[] data = new byte[1024];
+	        int len ;
+	        FileOutputStream fileOutputStream = null;
+	        try {
+			// 服务器存图路径
+			String path = request.getSession().getServletContext().getRealPath("") + "image/";
+			judeFileExists(path);
+			filename = System.currentTimeMillis() + ".jpg";
+			String realpath = path + filename;
+			spath = "/image/" + filename;
+			System.out.println(spath);
+			fileOutputStream = new FileOutputStream(realpath);
+	            while ((len = inputStream.read(data)) != -1) {
+	                fileOutputStream.write(data, 0, len);
+	            }
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        } finally {
+	            if (inputStream != null) {
+	                try {
+	                    inputStream.close();
+	                } catch (IOException e) {
+	                    e.printStackTrace();
+	                }
+	            }
+	            if (fileOutputStream != null) {
+	                try {
+	                    fileOutputStream.close();
+	                } catch (IOException e) {
+	                    e.printStackTrace();
+	                }
+	            }
+	        }
+		return spath;
+	}
+
+	// 判断文件是否存在
+	public static void judeFileExists(String filename) {
+		File file = new File(filename);
+		// 如果文件夹不存在则创建
+		if (!file.exists()) {
+			file.mkdir();
+		}
+	}
+
 }
+

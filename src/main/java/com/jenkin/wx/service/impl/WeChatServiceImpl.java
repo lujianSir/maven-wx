@@ -1,5 +1,7 @@
 package com.jenkin.wx.service.impl;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import com.jenkin.wx.pojo.message.VideoMessage;
 import com.jenkin.wx.pojo.message.Voice;
 import com.jenkin.wx.pojo.message.VoiceMessage;
 import com.jenkin.wx.service.WeChatService;
+import com.jenkin.wx.util.CommonUtil;
 import com.jenkin.wx.util.DateUtil;
 import com.jenkin.wx.util.WeChatMessageUtil;
 
@@ -149,4 +152,23 @@ public class WeChatServiceImpl implements WeChatService {
 
         return response;
     }
+
+	@Override
+	public String getAccessToken() throws IOException {
+		// TODO Auto-generated method stub
+		AccessToken accessToken = weChatDao.queryLatestAccessToken();
+		if (accessToken != null) {
+			long curMillis = DateUtil.getCurrentMillis();
+			long myCustomMillis = DateUtil.getCustomDateMillis(accessToken.getCreate_time());
+			if ((curMillis - myCustomMillis) / 1000 >= 7200) {
+				System.out.println("access_token值已过期，重新获取并入库......");
+				accessToken = CommonUtil.getAccessToken();
+				weChatDao.insertAccessToken(accessToken);
+			}
+		} else {
+			accessToken = CommonUtil.getAccessToken();
+			weChatDao.insertAccessToken(accessToken);
+		}
+		return accessToken.getAccess_token();
+	}
 }

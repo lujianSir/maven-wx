@@ -48,7 +48,7 @@ $(function (){
 function submitOrderInfoClick(){
 	  wx.getLocation({
 	        success: function (res) {
-	            alert("小宝鸽获取地理位置成功，经纬度为：（" + res.latitude + "，" + res.longitude + "）" );
+	            alert("获取地理位置成功，经纬度为：(" + res.latitude + "," + res.longitude + ")" );
 	        },
 	        fail: function(error) {
 	            AlertUtil.error("获取地理位置失败，请确保开启GPS且允许微信获取您的地理位置！");

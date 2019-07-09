@@ -65,10 +65,8 @@ function chooseImage(){
                     var mediaId = res.serverId; // 返回图片的服务器端ID，即mediaId
                     //将获取到的 mediaId 传入后台 方法savePicture
                     $.post("<%=request.getContextPath()%>/savePicture",{"mediaId":mediaId},function(res){
-                        //填写你自己的业务逻辑
-                        alert(res);
+                        //填写你自己的业务逻辑                      
                         var url='<%=request.getContextPath()%>'+res;
-                        alert(url);
                         $("#ceshi").append("<img src='"+url+"'  class='img-responsive'>");
                     });
                 },

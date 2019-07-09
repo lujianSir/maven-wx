@@ -37,7 +37,6 @@ public class WXImageController {
 		Map<String, Object> map = CommonUtil.getJsapiConfig(request, accessToken);
 		modelAndView.addObject("wxsign", map);
 		modelAndView.setViewName("uploadImg");
-		System.out.println(map);
 		return modelAndView;
 	}
 
@@ -74,7 +73,6 @@ public class WXImageController {
 		Map<String, Object> map = CommonUtil.getJsapiConfig(request, accessToken);
 		modelAndView.addObject("wxsign", map);
 		modelAndView.setViewName("getlocation");
-		System.out.println(map);
 		return modelAndView;
 	}
 
@@ -93,7 +91,6 @@ public class WXImageController {
 		Map<String, Object> map = CommonUtil.getJsapiConfig(request, accessToken);
 		modelAndView.addObject("wxsign", map);
 		modelAndView.setViewName("getRecord");
-		System.out.println(map);
 		return modelAndView;
 	}
 
@@ -112,7 +109,6 @@ public class WXImageController {
 		Map<String, Object> map = CommonUtil.getJsapiConfig(request, accessToken);
 		modelAndView.addObject("wxsign", map);
 		modelAndView.setViewName("share");
-		System.out.println(map);
 		return modelAndView;
 	}
 }

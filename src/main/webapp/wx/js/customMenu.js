@@ -141,8 +141,8 @@ function setSubText() {
         updateTit(activedTxt);
 
         radios[0].checked = true;
-        $('#editMsg').show();
-        $('#editPage').hide();
+       // $('#editMsg').show();
+        $('#editPage').show();
         $('.msg-context__item').show();
         $('.msg-template').hide();
     }
@@ -356,8 +356,8 @@ function menuCreate(obj) {
         updateTit(value);
 
         radios[0].checked = true;
-        $('#editMsg').show();
-        $('#editPage').hide();
+        //$('#editMsg').show();
+        $('#editPage').show();
         $('.msg-context__item').show();
         $('.msg-template').hide();
     }
@@ -445,8 +445,8 @@ function menuCreate(obj) {
                             default:
                                 $("#imgtextLi").trigger("click");
                         }
-                        $('#editMsg').show();
-                        $('#editPage').hide();
+                       // $('#editMsg').show();
+                        $('#editPage').show();
                         $('#radioGroup').show();
 
                         //拿key换取mediaId
@@ -465,8 +465,8 @@ function menuCreate(obj) {
                         $('#radioGroup').show();
                     } else if (!button[buttonIndex].type) {
                         radios[0].checked = true;
-                        $('#editMsg').show();
-                        $('#editPage').hide();
+                      //  $('#editMsg').show();
+                        $('#editPage').show();
                         $('#radioGroup').show();
                     }
                     if (button[buttonIndex].media_id) {
@@ -508,8 +508,8 @@ function menuCreate(obj) {
                         default:
                             $("#imgtextLi").trigger("click");
                     }
-                    $('#editMsg').show();
-                    $('#editPage').hide();
+                   // $('#editMsg').show();
+                    $('#editPage').show();
 
                     //拿key换取图文消息
                     $('.msg-template').html($('#' + subKey).html());
@@ -518,15 +518,16 @@ function menuCreate(obj) {
                     $('.msg-panel__del').on('click', delClick);
                     $('.msg-template').html(tempObj[subKey]);
                 } else if (subType == 'view') {
-                    radios[1].checked = true;
+                    radios[0].checked = true;
                     $('#editMsg').hide();
                     $('#editPage').show();
                     $('input[name="url"]').val(subUrl);
                 } else if (!subType) {
                     radios[0].checked = true;
-                    $('#editMsg').show();
-                    $('#editPage').hide();
-                    $('input[name="url"]').val('');
+                   // $('#editMsg').show();
+                    $('#editPage').show();
+                   // $('input[name="url"]').val('');
+                    $('input[name="url"]').val(subUrl);
                 }
                 if (subKey) {
                     $('.msg-context__item').hide();
@@ -599,8 +600,8 @@ function menuCreate(obj) {
                     $('#editMsg').hide();
                     $('#editPage').show();
                 } else {
-                    $('#editMsg').show();
-                    $('#editPage').hide();
+                    $('#editMsg').hide();
+                    $('#editPage').show();
                 }
             }
         };

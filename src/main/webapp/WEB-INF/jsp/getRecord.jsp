@@ -175,7 +175,14 @@ $(function (){
 					//返回音频的服务器端ID
 					serverId = res.serverId;
 					alert(serverId);
-				}
+					$.post("<%=request.getContextPath()%>/saveVideo",{"serverId":serverId},function(res){
+                        //填写你自己的业务逻辑   
+                        alert(res);
+                    });
+				},
+				fail: function (res) {
+	                alertModal('语音上传失败，请重试');
+	            }
 			});
 		});
 	

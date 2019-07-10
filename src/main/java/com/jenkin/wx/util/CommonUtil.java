@@ -628,6 +628,51 @@ public class CommonUtil {
 		return spath;
 	}
 
+	/**
+	 * 保存音频到服务器
+	 * 
+	 * @param accessToken
+	 * @param mediaId
+	 * @param picName
+	 * @param picPath
+	 * @throws Exception
+	 */
+	public static void saveVideoToDisk(String accessToken, String mediaId, HttpServletRequest request)
+			throws Exception {
+		InputStream inputStream = getMediaStream(accessToken, mediaId);
+		byte[] data = new byte[10240];
+		int len = 0;
+		FileOutputStream fileOutputStream = null;
+		// 服务器存图路径
+		String path = request.getSession().getServletContext().getRealPath("") + "video/";
+		judeFileExists(path);
+		String filename = System.currentTimeMillis() + ".amr";
+		String realpath = path + filename;
+		try {
+			fileOutputStream = new FileOutputStream(realpath);
+			while ((len = inputStream.read(data)) != -1) {
+				fileOutputStream.write(data, 0, len);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (inputStream != null) {
+				try {
+					inputStream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			if (fileOutputStream != null) {
+				try {
+					fileOutputStream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
 	// 判断文件是否存在
 	public static void judeFileExists(String filename) {
 		File file = new File(filename);

@@ -49,7 +49,14 @@ public class WXImageController {
 	// JSONObject json = JSONObject.parseObject(result);
 	// return json;
 	// }
-
+	/**
+	 * 获取微信服务器图片
+	 * 
+	 * @param mediaId
+	 * @param request
+	 * @return
+	 * @throws IOException
+	 */
 	@RequestMapping(value = "/savePicture", method = RequestMethod.POST)
 	@ResponseBody
 	public String savePicture(String mediaId, HttpServletRequest request) throws IOException {
@@ -92,6 +99,22 @@ public class WXImageController {
 		modelAndView.addObject("wxsign", map);
 		modelAndView.setViewName("getRecord");
 		return modelAndView;
+	}
+
+	/**
+	 * 获取微信服务器上的录音
+	 * 
+	 * @param mediaId
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/saveVideo", method = RequestMethod.POST)
+	@ResponseBody
+	public String saveVideo(String serverId, HttpServletRequest request) throws Exception {
+		String accessToken = weChatService.getAccessToken();
+		CommonUtil.saveVideoToDisk(serverId, accessToken, request);
+		return "success";
 	}
 
 	/**

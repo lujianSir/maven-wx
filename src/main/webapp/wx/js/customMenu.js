@@ -1,4 +1,4 @@
-﻿let obj;
+﻿﻿let obj;
 let mId;
 let tempObj;
 let button;
@@ -141,8 +141,8 @@ function setSubText() {
         updateTit(activedTxt);
 
         radios[0].checked = true;
-       // $('#editMsg').show();
-        $('#editPage').show();
+        $('#editMsg').show();
+        $('#editPage').hide();
         $('.msg-context__item').show();
         $('.msg-template').hide();
     }
@@ -356,8 +356,8 @@ function menuCreate(obj) {
         updateTit(value);
 
         radios[0].checked = true;
-        //$('#editMsg').show();
-        $('#editPage').show();
+        $('#editMsg').show();
+        $('#editPage').hide();
         $('.msg-context__item').show();
         $('.msg-template').hide();
     }
@@ -445,8 +445,8 @@ function menuCreate(obj) {
                             default:
                                 $("#imgtextLi").trigger("click");
                         }
-                       // $('#editMsg').show();
-                        $('#editPage').show();
+                        $('#editMsg').show();
+                        $('#editPage').hide();
                         $('#radioGroup').show();
 
                         //拿key换取mediaId
@@ -465,8 +465,8 @@ function menuCreate(obj) {
                         $('#radioGroup').show();
                     } else if (!button[buttonIndex].type) {
                         radios[0].checked = true;
-                      //  $('#editMsg').show();
-                        $('#editPage').show();
+                        $('#editMsg').show();
+                        $('#editPage').hide();
                         $('#radioGroup').show();
                     }
                     if (button[buttonIndex].media_id) {
@@ -508,8 +508,8 @@ function menuCreate(obj) {
                         default:
                             $("#imgtextLi").trigger("click");
                     }
-                   // $('#editMsg').show();
-                    $('#editPage').show();
+                    $('#editMsg').show();
+                    $('#editPage').hide();
 
                     //拿key换取图文消息
                     $('.msg-template').html($('#' + subKey).html());
@@ -518,16 +518,15 @@ function menuCreate(obj) {
                     $('.msg-panel__del').on('click', delClick);
                     $('.msg-template').html(tempObj[subKey]);
                 } else if (subType == 'view') {
-                    radios[0].checked = true;
+                    radios[1].checked = true;
                     $('#editMsg').hide();
                     $('#editPage').show();
                     $('input[name="url"]').val(subUrl);
                 } else if (!subType) {
                     radios[0].checked = true;
-                   // $('#editMsg').show();
-                    $('#editPage').show();
-                   // $('input[name="url"]').val('');
-                    $('input[name="url"]').val(subUrl);
+                    $('#editMsg').show();
+                    $('#editPage').hide();
+                    $('input[name="url"]').val('');
                 }
                 if (subKey) {
                     $('.msg-context__item').hide();
@@ -600,8 +599,8 @@ function menuCreate(obj) {
                     $('#editMsg').hide();
                     $('#editPage').show();
                 } else {
-                    $('#editMsg').hide();
-                    $('#editPage').show();
+                    $('#editMsg').show();
+                    $('#editPage').hide();
                 }
             }
         };
@@ -1372,16 +1371,17 @@ function modalAddClick() {
 
 function appIdChange() {
     var app_id = $("#appIdcode").val();
-    /*$.ajax({
-        url: baseURL + 'sys/menuConfig/queryListByAppOrParent/' + app_id,
+    $.ajax({
+        url:'../getWxMenu',
         type: "POST",
         data: null, // 以json字符串方式传递
         cache: false,
         async: false,
         success: function (data) {
-            if (data.buttonMenu.button.length > 0) {
+        	var result=JSON.parse(data.result); 
+            if (result.menu.button.length > 0) {
                 obj = {
-                    "menu": data.buttonMenu
+                    "menu": result.menu
                 };
                 $('.custom-menu-view__menu').remove();
 
@@ -1390,7 +1390,7 @@ function appIdChange() {
                 menuCreate(obj);
             } else {
                 obj = {
-                    "menu": data.buttonMenu
+                    "menu": result.menu
                 };
                 $('.custom-menu-view__menu').remove();
                 menuCreate(obj);
@@ -1400,15 +1400,15 @@ function appIdChange() {
         },
         error: function (data) {
         }
-    });*/
-    obj = {
+    });
+   /* obj = {
         "menu": {button: []}
     };
     $('.custom-menu-view__menu').remove();
 
     //清除右边数据
     $('.cm-edit-before').show().siblings().hide();
-    menuCreate(obj);
+    menuCreate(obj);*/
 }
 
 $(function () {
@@ -1435,8 +1435,8 @@ $(function () {
     });*/
     let data = {
         "list": [ {
-            "id": "wx6d464222e2572d67",
-            "text": "微信公众号菜单"
+            "id": "wx8f4c6ebb6b6d7bfa",
+            "text": "微信公众号菜单管理"
         }]
     }
 
@@ -1577,7 +1577,7 @@ $(function () {
                         let row = $(this).prevAll().length;
                         $(this).children('a').attr('href', button[row].url);
                         $(this).children('a').attr('target', '_blank');
-                    }
+                    } 
                     break;
             }
         });

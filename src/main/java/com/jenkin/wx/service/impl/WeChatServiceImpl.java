@@ -51,16 +51,14 @@ public class WeChatServiceImpl implements WeChatService {
         String ToUserName = jsonObject.get("ToUserName").toString();
         String FromUserName = jsonObject.get("FromUserName").toString();
         String MsgType = jsonObject.get("MsgType").toString();
-
         if (WeChatMessageUtil.MESSAGE_TEXT.equals(MsgType)) {
 
             TextMessage textMessage = new TextMessage();
             textMessage.setToUserName(FromUserName);
             textMessage.setFromUserName(ToUserName);
             textMessage.setMsgType(WeChatMessageUtil.MESSAGE_TEXT);
-            textMessage.setCreateTime(DateUtil.getCurrentMillis()/1000);
-            textMessage.setContent("收到了");
-
+			textMessage.setCreateTime(DateUtil.getCurrentMillis() / 1000);
+			textMessage.setContent("收到了");
             response = WeChatMessageUtil.toXml(textMessage);
         } else if (WeChatMessageUtil.MESSAGE_IMAGE.equals(MsgType)) {
 

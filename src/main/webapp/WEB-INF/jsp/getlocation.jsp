@@ -24,11 +24,11 @@ $(function (){
 		nonceStr: '${wxsign.nonceStr}', // 必填，生成签名的随机串
 	    signature: '${wxsign.signature}',// 必填，签名，见附录1
 		timestamp :'${wxsign.timestamp}', // 必填，生成签名的时间戳								
-		jsApiList : ['getLocation']      		     		    		     
+		jsApiList : ['getLocation','openLocation']      		     		    		     
 	});
 	wx.ready(function() {
 		wx.checkJsApi({
-			jsApiList : ['getLocation'],    
+			jsApiList : ['getLocation','openLocation'],    
 	        success: function(res) {
 	            // 以键值对的形式返回，可用的api值true，不可用为false
 	            // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
@@ -49,6 +49,18 @@ function submitOrderInfoClick(){
 	  wx.getLocation({
 	        success: function (res) {
 	            alert("获取地理位置成功，经纬度为：(" + res.latitude + "," + res.longitude + ")" );
+	            
+	            wx.ready(function(){
+	                wx.openLocation({
+	                    latitude:res.latitude, // 纬度，浮点数，范围为90 ~ -90
+	                    longitude:res.longitude, // 经度，浮点数，范围为180 ~ -180。
+	                    name: '本地位置', // 位置名
+	                    address: '测试本地位置准不准', // 地址详情说明
+	                   // scale: 25, // 地图缩放级别,整形值,范围从1~28。默认为最大
+	                    infoUrl: 'http://www.wolfcode.cn/' // 在查看位置界面底部显示的超链接,可点击跳转
+	                });
+	            });
+	            
 	        },
 	        fail: function(error) {
 	            AlertUtil.error("获取地理位置失败，请确保开启GPS且允许微信获取您的地理位置！");

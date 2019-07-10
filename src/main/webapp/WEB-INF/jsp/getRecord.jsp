@@ -5,32 +5,38 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>录音</title>
+<!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
  <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
  <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+ <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 <style type="text/css">
-	@charset "utf-8";
-*{ margin:0px; padding:0px; box-sizing:border-box; -webkit-tap-highlight-color:rgba(0,0,0,0);}
-html{ max-width:640px; margin:0 auto;}
-body{ font-family:"PingFangSC-Regular","sans-serif","STHeitiSC-Light","微软雅黑","Microsoft YaHei"; font-size:24px; line-height:1.5em; color:#000;
-    -webkit-user-select:none; user-select:none;
-    -webkit-touch-callout:none; touch-callout:none;
-}
- 
-.start_btn , .play_btn , .send_btn,.translate_btn{ width:400px; height:100px; line-height:60px; margin:20px auto; text-align:center; border:#eee solid 2px; cursor:pointer;}
-.start_btn_in , .stop_btn{ color:#f00; border:#f00 solid 2px;}
-
+	.row{
+		  margin: 140px 40px 40px 40px;
+	}
+	.btn{
+		font-size: 40px;
+		width: 300px;
+	}
 </style>
 </head>
 <body>
-	<div class="start_btn" style="font-size: 40px;margin-top: 100px;">按住不放即可录音</div>
- 
-	<div class="play_btn" style="font-size: 40px;margin-top: 100px;">点我播放</div>
-	
-	<div class="translate_btn" style="font-size: 40px;margin-top: 100px;">点我翻译</div>
-	 
-	<div class="send_btn" style="font-size: 40px;margin-top: 100px;">点我保存</div>
-	
+	<div class="container-fluid" style="text-align: center;">
+		<div class="row">
+			 <button type="button" class="btn btn-primary start_btn">按住不放即录音</button>			 
+		</div>
+		<div class="row">
+			<button type="button" class="btn btn-success play_btn">点我播放</button>	 
+		</div>
+		<div class="row">	
+			<button type="button" class="btn btn-info translate_btn">点我翻译</button>
+		</div>
+		<div class="row">	
+			<button type="button" class="btn btn-warning send_btn">点我保存</button>
+		</div>	
+	</div>
 </body>
 </html>
 

@@ -50,7 +50,7 @@ public class WXImageController {
 	// return json;
 	// }
 	/**
-	 * 获取微信服务器图片
+	 * 获取微信服务器图片(一张)
 	 * 
 	 * @param mediaId
 	 * @param request
@@ -63,6 +63,33 @@ public class WXImageController {
 		String accessToken = weChatService.getAccessToken();
 		String imgPrevPath = CommonUtil.saveImageToDisk(mediaId, accessToken, request);
 		return imgPrevPath;
+	}
+
+	/**
+	 * 获取微信服务器图片(多张)
+	 * 
+	 * @param mediaId
+	 * @param request
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/savePictures", method = RequestMethod.POST)
+	@ResponseBody
+	public String savePictures(String mediaIds, HttpServletRequest request) throws IOException {
+		String accessToken = weChatService.getAccessToken();
+		String imgPrevPaths = "";
+		if (mediaIds != null && !("").equals(mediaIds)) {
+			String[] smediaId = mediaIds.split(",");
+			for (int i = 0; i < smediaId.length; i++) {
+				String mediaId = smediaId[i];
+				imgPrevPaths += CommonUtil.saveImageToDisk(mediaId, accessToken, request);
+				if (i < smediaId.length - 1) {
+					imgPrevPaths += ",";
+				}
+			}
+		}
+
+		return imgPrevPaths;
 	}
 
 	/**

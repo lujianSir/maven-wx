@@ -3,17 +3,41 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>上传图片</title>
+<!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
  <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
  <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+ <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<style type="text/css">
+	.row{
+		    margin: 20px 20px 20px 20px;
+	}
+
+</style>
 </head>
 <body>
-	<div id="ceshi">
-        <input type="button" value="上传图片"  onclick="chooseImage()" style="font-size: 35px;"/>
+	<div class="container-fluid" style="text-align: center;">
+		<div class="row">
+			 <button type="button" class="btn btn-primary" onclick="chooseImage()">上传一张图片</button>			 
+		</div>
+		<div class="row">
+			<button type="button" class="btn btn-success" onclick="chooseImages()">一起上传多张图片</button>	 
+		</div>
+		<div class="row">	
+			<button type="button" class="btn btn-info" onclick="separatechooseImage()">分开上传多张图片</button>
+		</div>
+		<div class="row">
+				<div id="ceshi">
   		
-    </div>
+  				</div>	 
+		</div>
+	</div>
 </body>
 </html>
 
@@ -50,14 +74,14 @@ $(function (){
 
 	
 //打开相机	
-function chooseImage(){
+ function chooseImage(){
+	 $("#ceshi").empty();
     wx.chooseImage({
         count: 1, // 默认9
         sizeType: ['original', 'compressed'], // 指定是原图还是压缩图，默认都有
         sourceType: ['album', 'camera'], // 指定来源是相册还是相机，默认都有
         success: function (res) {       	
             var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-            alert(localIds);
             wx.uploadImage({
                 localId: localIds.toString(), // 需要上传的图片的ID，由chooseImage接口获得
                 isShowProgressTips: 1, // 进度提示
@@ -76,6 +100,93 @@ function chooseImage(){
             }); 
         }
     });
+} 
+
+//打开相机
+//多张图片的处理方式(一起传递)
+function chooseImages(){	
+$("#ceshi").empty();
+var images = {localIds:[],serverId:[]};
+    wx.chooseImage({
+        count: 9,
+        sizeType: ['original', 'compressed'],
+        sourceType: ['album'],
+        success: function(res) {
+            images.localIds = res.localIds;
+            var uploadCount = 0;
+            var localIdLength = images.localIds.length;
+            var m = 0;
+            var upload = function() {
+                wx.uploadImage({
+                    localId:images.localIds[uploadCount],
+                    success: function(res) {
+                        images.serverId.push(res.serverId);
+                        //如果还有照片，继续上传
+                       // ajaxupload(res.serverId);//这个方法是你需要把所谓的媒体meidaid进行下载到本地的ajax处理如果你需要的话就写一个ajax方法
+						
+                        uploadCount++;
+                        if (uploadCount < localIdLength) {
+                            upload();
+                        }else{	
+							 $.post("<%=request.getContextPath()%>/savePictures",{"mediaIds":images.serverId.toString()},function(res){
+							    //填写你自己的业务逻辑                
+							    var str = res.split(',');
+							    var html="";
+							    for(var i=0;i<str.length;i++){
+							    	var url='<%=request.getContextPath()%>'+str[i];
+							    	html+="<img src='"+url+"'  class='img-responsive'>";
+							    }
+							    $("#ceshi").append(html);
+							   <%--  var url='<%=request.getContextPath()%>'+res;
+							    $("#ceshi").append("<img src='"+url+"'  class='img-responsive'>"); --%>
+							}); 
+						}
+                    }
+                });                    
+            };
+            upload();
+        }
+    });
 }
+
+//多张图片的处理方式(分开传递)
+function separatechooseImage(){
+	$("#ceshi").empty();
+	var images = {localIds:[],serverId:[]};
+	    wx.chooseImage({
+	        count: 9,
+	        sizeType: ['original', 'compressed'],
+	        sourceType: ['album'],
+	        success: function(res) {
+	            images.localIds = res.localIds;
+	            var uploadCount = 0;
+	            var localIdLength = images.localIds.length;
+	            var m = 0;
+	            var upload = function() {
+	                wx.uploadImage({
+	                    localId:images.localIds[uploadCount],
+	                    success: function(res) {
+	                        images.serverId.push(res.serverId);
+	                        //如果还有照片，继续上传
+	                       // ajaxupload(res.serverId);//这个方法是你需要把所谓的媒体meidaid进行下载到本地的ajax处理如果你需要的话就写一个ajax方法
+							 $.post("<%=request.getContextPath()%>/savePicture",{"mediaId":res.serverId},function(res){
+						         //填写你自己的业务逻辑                      
+						         var url='<%=request.getContextPath()%>'+res;
+						         $("#ceshi").append("<img src='"+url+"'  class='img-responsive'>");
+						     });
+	                        uploadCount++;
+	                        if (uploadCount < localIdLength) {
+	                            upload();
+	                        }
+	                    }
+	                });                    
+	            };
+	            upload();
+	        }
+	    });
+}
+
+
+
 
 </script>

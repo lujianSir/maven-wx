@@ -17,7 +17,7 @@ body{ font-family:"PingFangSC-Regular","sans-serif","STHeitiSC-Light","微软雅
     -webkit-touch-callout:none; touch-callout:none;
 }
  
-.start_btn , .play_btn , .send_btn{ width:400px; height:100px; line-height:60px; margin:20px auto; text-align:center; border:#eee solid 2px; cursor:pointer;}
+.start_btn , .play_btn , .send_btn,.translate_btn{ width:400px; height:100px; line-height:60px; margin:20px auto; text-align:center; border:#eee solid 2px; cursor:pointer;}
 .start_btn_in , .stop_btn{ color:#f00; border:#f00 solid 2px;}
 
 </style>
@@ -25,9 +25,11 @@ body{ font-family:"PingFangSC-Regular","sans-serif","STHeitiSC-Light","微软雅
 <body>
 	<div class="start_btn" style="font-size: 40px;margin-top: 100px;">按住不放即可录音</div>
  
-	<div class="play_btn" style="font-size: 40px;">点我播放</div>
+	<div class="play_btn" style="font-size: 40px;margin-top: 100px;">点我播放</div>
+	
+	<div class="translate_btn" style="font-size: 40px;margin-top: 100px;">点我翻译</div>
 	 
-	<div class="send_btn" style="font-size: 40px;">点我保存</div>
+	<div class="send_btn" style="font-size: 40px;margin-top: 100px;">点我保存</div>
 	
 </body>
 </html>
@@ -42,12 +44,12 @@ $(function (){
 		nonceStr: '${wxsign.nonceStr}', // 必填，生成签名的随机串
 	    signature: '${wxsign.signature}',// 必填，签名，见附录1
 		timestamp :'${wxsign.timestamp}', // 必填，生成签名的时间戳								
-		jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage','startRecord','stopRecord','onVoiceRecordEnd','playVoice','stopVoice','onVoicePlayEnd','uploadVoice'],
+		jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage','startRecord','stopRecord','onVoiceRecordEnd','playVoice','stopVoice','onVoicePlayEnd','uploadVoice','translateVoice'],
       		     		    		     
 	});
 	wx.ready(function() {
 		wx.checkJsApi({
-			jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage','startRecord','stopRecord','onVoiceRecordEnd','playVoice','stopVoice','onVoicePlayEnd','uploadVoice'],
+			jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage','startRecord','stopRecord','onVoiceRecordEnd','playVoice','stopVoice','onVoicePlayEnd','uploadVoice','translateVoice'],
 	        success: function(res) {
 	            // 以键值对的形式返回，可用的api值true，不可用为false
 	            // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
@@ -183,6 +185,21 @@ $(function (){
 				fail: function (res) {
 	                alertModal('语音上传失败，请重试');
 	            }
+			});
+		});
+		
+		
+		$('.translate_btn').on('click',function(){
+			if(!localId){
+				alert('您还未录音，请录音后再点击翻译');
+				return;
+			}
+			wx.translateVoice({
+			   localId:localId, // 需要识别的音频的本地Id，由录音相关接口获得
+			    isShowProgressTips: 1, // 默认为1，显示进度提示
+			    success: function (res) {
+			        alert("翻译结果:"+res.translateResult); // 语音识别的结果
+			    }
 			});
 		});
 	

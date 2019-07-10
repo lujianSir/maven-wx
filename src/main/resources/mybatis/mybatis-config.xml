@@ -11,5 +11,6 @@
     <typeAliases>
         <typeAlias type="com.jenkin.wx.pojo.AccessToken" alias="AccessToken"/>
         <typeAlias type="com.jenkin.wx.pojo.User" alias="User"/>
+        <typeAlias type="com.jenkin.wx.pojo.TemporaryResources" alias="TemporaryResources"/>
     </typeAliases>
 </configuration>

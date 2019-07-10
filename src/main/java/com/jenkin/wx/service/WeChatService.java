@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 
 import com.jenkin.wx.pojo.AccessToken;
+import com.jenkin.wx.pojo.TemporaryResources;
 
 /**
  * @author: jenkinwang
@@ -26,4 +27,12 @@ public interface WeChatService {
 	 * @throws IOException
 	 */
 	String getAccessToken() throws IOException;
+
+	/**
+	 * 临时图片添加
+	 * 
+	 * @param temporaryResources
+	 * @return
+	 */
+	int insertTemporaryResources(TemporaryResources temporaryResources);
 }

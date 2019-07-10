@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.alibaba.fastjson.JSONObject;
 import com.jenkin.wx.dao.WeChatDao;
 import com.jenkin.wx.pojo.AccessToken;
+import com.jenkin.wx.pojo.TemporaryResources;
 import com.jenkin.wx.pojo.message.Image;
 import com.jenkin.wx.pojo.message.ImageMessage;
 import com.jenkin.wx.pojo.message.TextMessage;
@@ -44,6 +45,12 @@ public class WeChatServiceImpl implements WeChatService {
     }
 
     @Override
+	public int insertTemporaryResources(TemporaryResources temporaryResources) {
+		// TODO Auto-generated method stub
+		return weChatDao.insertTemporaryResources(temporaryResources);
+	}
+
+	@Override
     public String handleWeChatMessage(HttpServletRequest request) {
         String response = "";
 		String url2 = request.getScheme() + "://" + request.getServerName();// +request.getRequestURI();
@@ -169,4 +176,5 @@ public class WeChatServiceImpl implements WeChatService {
 		}
 		return accessToken.getAccess_token();
 	}
+
 }

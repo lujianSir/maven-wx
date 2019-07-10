@@ -11,4 +11,8 @@
 	</insert>
 	
 	
+	<insert id="insertTemporaryResources" parameterType="com.jenkin.wx.pojo.TemporaryResources">
+		insert into temporary_resources (media_id,name,url,mdate,mtype) values (#{temporaryResources.media_id},#{temporaryResources.name},#{temporaryResources.url},#{temporaryResources.mdate},#{temporaryResources.mtype})
+	</insert>
+	
 </mapper>

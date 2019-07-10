@@ -1,6 +1,7 @@
 package com.jenkin.wx.controller;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.jenkin.wx.pojo.TemporaryResources;
 import com.jenkin.wx.service.WeChatService;
 import com.jenkin.wx.util.CommonUtil;
 
@@ -62,7 +64,20 @@ public class WXImageController {
 	public String savePicture(String mediaId, HttpServletRequest request) throws IOException {
 		String accessToken = weChatService.getAccessToken();
 		String imgPrevPath = CommonUtil.saveImageToDisk(mediaId, accessToken, request);
-		return imgPrevPath;
+		String name = System.currentTimeMillis() + "";
+		TemporaryResources temporaryResources = new TemporaryResources();
+		temporaryResources.setMedia_id(mediaId);
+		temporaryResources.setUrl(imgPrevPath);
+		temporaryResources.setName(name);
+		temporaryResources.setMdate(new Date());
+		temporaryResources.setMtype(1);
+		int num = weChatService.insertTemporaryResources(temporaryResources);
+		if (num > 0) {
+			return imgPrevPath;
+		} else {
+			return null;
+		}
+
 	}
 
 	/**
@@ -161,4 +176,5 @@ public class WXImageController {
 		modelAndView.setViewName("share");
 		return modelAndView;
 	}
+
 }

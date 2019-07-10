@@ -8,4 +8,8 @@
     <select id="queryLatestAccessToken" resultType="AccessToken">
         select access_token, expires_in, create_time from t_wx_access_token where create_time = (select max(create_time) from t_wx_access_token);
     </select>
+    
+    <insert id="insertTemporaryResources" parameterType="com.jenkin.wx.pojo.TemporaryResources">
+		insert into temporary_resources (media_id,name,url,mdate,mtype) values (#{temporaryResources.media_id},#{temporaryResources.name},#{temporaryResources.url},#{temporaryResources.mdate},#{temporaryResources.mtype})
+	</insert>
 </mapper>

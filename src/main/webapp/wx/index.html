@@ -146,6 +146,7 @@
 									<input name="custom_input_title" type="text" class="form-control" ng-model="menuname" value="" placeholder="" ng-maxlength="5"></div><div class="col-sm-5 help-block">
 									<div ng-show="custom_form.custom_input_title.$dirty&&custom_form.custom_input_title.$invalid-maxlength">字数不超过5个汉字或16个字符</div>
 									<div class="font_sml" style="display: block;">若无二级菜单，可输入20个汉字或60个字符</div>
+									<div class="font_sml" style="display: block;color: red;">暂时只实现跳转网页功能，不能发送消息</div>
 								</div>
 								</div>
 								<div class="form-group" id="radioGroup">
@@ -199,7 +200,7 @@
 										</label>
 										<div class="col-sm-5">
 											<input type="text" name="url" class="form-control" placeholder="认证号才可手动输入地址">
-											<span class="help-block">必填,必须是正确的URL格式</span>
+											<span class="help-block">必填(一定要带http://或者https://)</br>必须是正确的URL格式</span>
 										</div>
 									</div>
 								</div>

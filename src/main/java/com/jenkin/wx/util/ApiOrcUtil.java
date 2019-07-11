@@ -116,8 +116,11 @@ public class ApiOrcUtil {
 			if (res != null) {
 				JSONObject plateLicense = new JSONObject();
 				JSONArray words_result1 = res.getJSONArray("words_result");
-				JSONObject words_result = words_result1.getJSONObject(0);
-				plateLicense.put("number", words_result.get("number"));
+				for (int i = 0; i < words_result1.length(); i++) {
+					int j = i + 1;
+					JSONObject myjObject = words_result1.getJSONObject(i);
+					plateLicense.put(j + "号车牌", myjObject.get("number"));
+				}
 				return plateLicense.toString(2);
 			} else {
 				return "";

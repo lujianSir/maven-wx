@@ -16,4 +16,8 @@
 	<select id="queryTemporaryImages" resultType="com.jenkin.wx.pojo.TemporaryResources">
 		select * from temporary_resources  where mdate > DATE_SUB(now(),INTERVAL 3 DAY)  and mtype=#{temporaryResources.mtype}
 	</select>
+	
+	<select id="queryTById" resultType="com.jenkin.wx.pojo.TemporaryResources">
+		select * from temporary_resources  where media_id=#{mediaId}
+	</select>
 </mapper>

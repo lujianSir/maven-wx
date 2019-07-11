@@ -184,4 +184,10 @@ public class WeChatServiceImpl implements WeChatService {
 		return weChatDao.queryTemporaryImages(temporaryResources);
 	}
 
+	@Override
+	public TemporaryResources queryTById(String mediaId) {
+		// TODO Auto-generated method stub
+		return weChatDao.queryTById(mediaId);
+	}
+
 }

@@ -32,4 +32,12 @@ public interface WeChatDao {
 	 * @return
 	 */
 	List<TemporaryResources> queryTemporaryImages(@Param("temporaryResources") TemporaryResources temporaryResources);
+
+	/**
+	 * 通过ID查询
+	 * 
+	 * @param mediaId
+	 * @return
+	 */
+	TemporaryResources queryTById(String mediaId);
 }

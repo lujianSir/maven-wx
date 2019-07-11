@@ -46,6 +46,11 @@
 			<div class="col-md-6">点击跳转到录音的页面</div>
   			<div class="col-md-6"><input type="button" onclick="jumpRecord()" value="跳转录音地址" > </div>
 		</div>
+		
+		<div class="row">
+			<div class="col-md-6">点击人工智能识别图片页面</div>
+  			<div class="col-md-6"><input type="button" onclick="jumpArtificial()" value="跳转智能识别图片地址" > </div>
+		</div>
 	</div>
 
 </body>
@@ -68,5 +73,8 @@
 	}
 	function jumpRecord(){
 		window.location.href='<%=request.getContextPath()%>/getRecord';
+	}
+	function jumpArtificial(){
+		window.location.href='<%=request.getContextPath()%>/inintWXImage';
 	}
 </script>

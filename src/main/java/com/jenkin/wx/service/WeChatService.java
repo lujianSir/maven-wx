@@ -43,4 +43,12 @@ public interface WeChatService {
 	 * @return
 	 */
 	List<TemporaryResources> queryTemporaryImages(TemporaryResources temporaryResources);
+
+	/**
+	 * 通过ID查询
+	 * 
+	 * @param mediaId
+	 * @return
+	 */
+	TemporaryResources queryTById(String mediaId);
 }

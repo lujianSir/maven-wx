@@ -1,5 +1,7 @@
 package com.jenkin.wx.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.jenkin.wx.pojo.AccessToken;
@@ -23,4 +25,11 @@ public interface WeChatDao {
 	 * @return
 	 */
 	int insertTemporaryResources(@Param("temporaryResources") TemporaryResources temporaryResources);
+
+	/**
+	 * 查询三天内的数据
+	 * 
+	 * @return
+	 */
+	List<TemporaryResources> queryTemporaryImages(@Param("temporaryResources") TemporaryResources temporaryResources);
 }

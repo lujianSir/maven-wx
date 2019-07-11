@@ -10,6 +10,10 @@
     </select>
     
     <insert id="insertTemporaryResources" parameterType="com.jenkin.wx.pojo.TemporaryResources">
-		insert into temporary_resources (media_id,name,url,mdate,mtype) values (#{temporaryResources.media_id},#{temporaryResources.name},#{temporaryResources.url},#{temporaryResources.mdate},#{temporaryResources.mtype})
+		insert into temporary_resources (media_id,name,url,mdate,mtype,realPath) values (#{temporaryResources.media_id},#{temporaryResources.name},#{temporaryResources.url},#{temporaryResources.mdate},#{temporaryResources.mtype},#{temporaryResources.realPath})
 	</insert>
+	
+	<select id="queryTemporaryImages" resultType="com.jenkin.wx.pojo.TemporaryResources">
+		select * from temporary_resources  where mdate > DATE_SUB(now(),INTERVAL 3 DAY)  and mtype=#{temporaryResources.mtype}
+	</select>
 </mapper>

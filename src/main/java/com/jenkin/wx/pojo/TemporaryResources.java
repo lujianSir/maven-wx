@@ -26,6 +26,8 @@ public class TemporaryResources implements Serializable {
 
 	private int mtype;// 状态 1.图片 2.语音
 
+	private String realPath;// 真实地址
+
 	public String getMedia_id() {
 		return media_id;
 	}
@@ -68,6 +70,14 @@ public class TemporaryResources implements Serializable {
 
 	public void setMtype(int mtype) {
 		this.mtype = mtype;
+	}
+
+	public String getRealPath() {
+		return realPath;
+	}
+
+	public void setRealPath(String realPath) {
+		this.realPath = realPath;
 	}
 
 }

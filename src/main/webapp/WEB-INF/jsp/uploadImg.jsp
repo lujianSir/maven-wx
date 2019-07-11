@@ -90,7 +90,7 @@ $(function (){
                     //将获取到的 mediaId 传入后台 方法savePicture
                     $.post("<%=request.getContextPath()%>/savePicture",{"mediaId":mediaId},function(res){
                         //填写你自己的业务逻辑                      
-                        var url='<%=request.getContextPath()%>'+res;
+                        var url='<%=request.getContextPath()%>/'+res;
                         $("#ceshi").append("<img src='"+url+"'  class='img-responsive'>");
                     });
                 },
@@ -133,7 +133,7 @@ var images = {localIds:[],serverId:[]};
 							    var str = res.split(',');
 							    var html="";
 							    for(var i=0;i<str.length;i++){
-							    	var url='<%=request.getContextPath()%>'+str[i];
+							    	var url='<%=request.getContextPath()%>/'+str[i];
 							    	html+="<img src='"+url+"'  class='img-responsive'>";
 							    }
 							    $("#ceshi").append(html);
@@ -171,7 +171,7 @@ function separatechooseImage(){
 	                       // ajaxupload(res.serverId);//这个方法是你需要把所谓的媒体meidaid进行下载到本地的ajax处理如果你需要的话就写一个ajax方法
 							 $.post("<%=request.getContextPath()%>/savePicture",{"mediaId":res.serverId},function(res){
 						         //填写你自己的业务逻辑                      
-						         var url='<%=request.getContextPath()%>'+res;
+						         var url='<%=request.getContextPath()%>/'+res;
 						         $("#ceshi").append("<img src='"+url+"'  class='img-responsive'>");
 						     });
 	                        uploadCount++;

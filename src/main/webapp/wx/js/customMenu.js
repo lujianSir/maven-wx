@@ -902,7 +902,7 @@ function imageText() {
 }
 
 function picture() {
-    let responseStr = [{
+   /* let responseStr = [{
         "materialId": null,
         "mediaId": "5iDtROEQOkUtgnfeqz4pYHZDtiZlnGS-54z-4H8ykCw",
         "url": "img/t.png",
@@ -1014,26 +1014,26 @@ function picture() {
         "voiceType": null,
         "title": null,
         "duration": null
-    }];
-/*    var appid = $("#appIdcode").val();
+    }];*/
+
     $.ajax({
-        url: baseURL + 'wechat/material/loadPic',
+        url: '../queryTemporaryImages',
         type: 'POST',
-        data: {appid: appid},
         dataType: "json",
         cache: false,
         async: false,
-        success: function (responseStr) {*/
+        success: function (responseStr) {
             $("#imgTextAdd").empty();
             var imgHtml = '';
             for (let i = 0; i < responseStr.length; i++) {
                 if (i % 3 == 0) {
                     imgHtml += '<div style="display: flex;">'
                 }
-                imgHtml += '<div id=' + JSON.stringify(responseStr[i].mediaId) + ' class="col-xs-4">'
+                var url="/WeChatOfficialAccount/"+responseStr[i].url;
+                imgHtml += '<div id=' + JSON.stringify(responseStr[i].media_id) + ' class="col-xs-4">'
                     + '<div class="panel panel-default">'
                     + '<div class="panel-body">'
-                    + '<div class="msg-img"><img src=' + JSON.stringify(responseStr[i].url) + ' alt=""></div>'
+                    + '<div class="msg-img"><img src=' + url + ' alt=""></div>'
                     + '</div>'
                     + '<div class="mask-bg"><div class="mask-icon"><i class="icon-ok"></i></div></div>'
                     + '</div>'
@@ -1045,11 +1045,11 @@ function picture() {
             ;
             $("#imgTextAdd").append(imgHtml);
             modalAddClick();
-        /*},
+        },
         error: function (responseStr) {
             layer.alert("出错啦");
         }
-    });*/
+    });
     let delHtml = '<span class="msg-panel__del del-tuwen">删除</span>';
     if ($(".subbutton__actived").attr('alt')) {
         let row = $(".subbutton__actived").prevAll().length;

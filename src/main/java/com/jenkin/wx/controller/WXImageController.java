@@ -2,6 +2,7 @@ package com.jenkin.wx.controller;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -71,6 +72,8 @@ public class WXImageController {
 		temporaryResources.setName(name);
 		temporaryResources.setMdate(new Date());
 		temporaryResources.setMtype(1);
+		String rootPath = request.getSession().getServletContext().getRealPath("/").replace("\\", "/");
+		temporaryResources.setRealPath(rootPath + imgPrevPath);
 		int num = weChatService.insertTemporaryResources(temporaryResources);
 		if (num > 0) {
 			return imgPrevPath;
@@ -105,6 +108,32 @@ public class WXImageController {
 		}
 
 		return imgPrevPaths;
+	}
+
+	/**
+	 * 查询临时图片
+	 * 
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/queryTemporaryImages", method = RequestMethod.POST)
+	@ResponseBody
+	public List<TemporaryResources> queryTemporaryImages() throws IOException {
+		TemporaryResources temporaryResources = new TemporaryResources();
+		temporaryResources.setMtype(1);
+		List<TemporaryResources> list = weChatService.queryTemporaryImages(temporaryResources);
+		// 获得令牌
+		/*
+		 * String accessToken = weChatService.getAccessToken(); for (int i = 0;
+		 * i < list.size(); i++) { // 调用上传文件方法 url文件本地保存路径 voice文件类型
+		 * accessToken微信令牌 JSONObject JSONObject jsonObject =
+		 * CommonUtil.addMaterialEver(list.get(i).getRealPath(), "image",
+		 * accessToken); if (jsonObject != null &&
+		 * jsonObject.getString("media_id") != null) { // 获得保存到微信服务器返回的ID String
+		 * mediaId = jsonObject.getString("media_id");
+		 * list.get(i).setMedia_id(mediaId); } }
+		 */
+		return list;
 	}
 
 	/**

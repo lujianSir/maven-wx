@@ -1,6 +1,7 @@
 package com.jenkin.wx.service;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -35,4 +36,11 @@ public interface WeChatService {
 	 * @return
 	 */
 	int insertTemporaryResources(TemporaryResources temporaryResources);
+
+	/**
+	 * 查询三天内的数据
+	 * 
+	 * @return
+	 */
+	List<TemporaryResources> queryTemporaryImages(TemporaryResources temporaryResources);
 }

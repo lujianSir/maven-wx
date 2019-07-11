@@ -1,6 +1,7 @@
 package com.jenkin.wx.service.impl;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -175,6 +176,12 @@ public class WeChatServiceImpl implements WeChatService {
 			weChatDao.insertAccessToken(accessToken);
 		}
 		return accessToken.getAccess_token();
+	}
+
+	@Override
+	public List<TemporaryResources> queryTemporaryImages(TemporaryResources temporaryResources) {
+		// TODO Auto-generated method stub
+		return weChatDao.queryTemporaryImages(temporaryResources);
 	}
 
 }

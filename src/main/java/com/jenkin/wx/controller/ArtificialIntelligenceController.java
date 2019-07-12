@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,10 +16,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.baidu.aip.face.AipFace;
+import com.jenkin.wx.pojo.Image;
 import com.jenkin.wx.pojo.TemporaryResources;
 import com.jenkin.wx.service.WeChatService;
 import com.jenkin.wx.util.ApiOrcUtil;
 import com.jenkin.wx.util.CommonUtil;
+import com.lujian.facelogin.AiFaceObject;
+import com.lujian.facelogin.Base64Convert;
+import com.lujian.facelogin.FaceDetection;
+import com.lujian.facelogin.FaceRegistration;
+import com.lujian.facelogin.FaceSearch;
 
 @Controller
 public class ArtificialIntelligenceController {
@@ -76,7 +84,7 @@ public class ArtificialIntelligenceController {
 	}
 
 	/**
-	 * 识别图片身份证
+	 * 识别图片身份证、车牌
 	 * 
 	 * @param mediaId
 	 * @return
@@ -104,4 +112,108 @@ public class ArtificialIntelligenceController {
 		return message;
 	}
 
+	/**
+	 * 人脸上传
+	 * 
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/inintFace")
+	public ModelAndView inintFace(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		ModelAndView modelAndView = new ModelAndView();
+		String accessToken = weChatService.getAccessToken();
+		Map<String, Object> map = CommonUtil.getJsapiConfig(request, accessToken);
+		modelAndView.addObject("wxsign", map);
+		modelAndView.setViewName("face");
+		return modelAndView;
+	}
+
+	/**
+	 * 注册人脸
+	 * 
+	 * @param mediaId
+	 * @param mtype
+	 * @return
+	 */
+	@RequestMapping(value = "/faceRegist", method = RequestMethod.POST, produces = {
+			"application/text;charset=UTF-8" })
+	@ResponseBody
+	public String faceRegist(String mediaId) {
+		String message = "";
+		TemporaryResources temporaryResources = weChatService.queryTById(mediaId);
+		String realPah = temporaryResources.getRealPath();
+		Image image = new Image();
+		String img = Base64Convert.GetImageStr(realPah);
+		image.setImage(img);
+		image.setImageType("BASE64");
+		AipFace client = AiFaceObject.getClient();
+		String groupId = "ceshi";
+		String userId = Base64Convert.getUUID32();
+		File f = new File(realPah);
+		if (f.exists()) {
+			message = FaceDetection.Facedetection(client, image);// 检测照片是否是对的
+			if (!message.equals("照片不对，需要生活照")) {// 对的 上传到百度云
+				message = FaceRegistration.Faceregistrtion(client, groupId, userId, image);
+			} else {
+				JSONObject jsobj1 = new JSONObject();
+				jsobj1.put("message", "照片不对，需要生活照");
+				message = jsobj1.toString();
+			}
+		} else {
+			message = "{'message':'照片不存在'}";
+		}
+		System.out.println(message);
+		return message;
+	}
+
+	/**
+	 * 验证人脸图片
+	 * 
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/inintsearchFace")
+	public ModelAndView inintsearchFace(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		ModelAndView modelAndView = new ModelAndView();
+		String accessToken = weChatService.getAccessToken();
+		Map<String, Object> map = CommonUtil.getJsapiConfig(request, accessToken);
+		modelAndView.addObject("wxsign", map);
+		modelAndView.setViewName("searchface");
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/faceSearch", method = RequestMethod.POST, produces = { "application/text;charset=UTF-8" })
+	@ResponseBody
+	public String faceSearch(String mediaId) {
+		String message = "";
+		TemporaryResources temporaryResources = weChatService.queryTById(mediaId);
+		String realPah = temporaryResources.getRealPath();
+		Image image = new Image();
+		String img = Base64Convert.GetImageStr(realPah);
+		image.setImage(img);
+		image.setImageType("BASE64");
+		AipFace client = AiFaceObject.getClient();
+		String groupId = "ceshi";
+		String userId = Base64Convert.getUUID32();
+		File f = new File(realPah);
+		if (f.exists()) {
+			message = FaceDetection.Facedetection(client, image);// 检测照片是否是对的
+			if (!message.equals("照片不对，需要生活照")) {// 对的 与百度云上面进行验证
+				message = FaceSearch.Faceregistrtion(client, groupId, image);
+			} else {
+				JSONObject jsobj1 = new JSONObject();
+				jsobj1.put("message", "照片不对，需要生活照");
+				message = jsobj1.toString();
+			}
+
+		} else {
+			message = "{'message':'照片不存在'}";
+		}
+		System.out.println(message);
+		return message;
+	}
 }

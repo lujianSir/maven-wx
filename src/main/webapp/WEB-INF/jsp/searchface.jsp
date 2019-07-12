@@ -6,7 +6,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>身份证、车牌号识别</title>
+<title>验证人脸识别</title>
 <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
  <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
@@ -24,9 +24,6 @@
 <body>
 	<div class="container-fluid" style="text-align: center;">
 		<div class="row">
-			<input type="text" class="form-control" id="mtype" placeholder="请输入类型:1为身份证;2为车牌">		 
-		</div>
-		<div class="row">
 			 <button type="button" class="btn btn-primary" onclick="chooseImage()">上传图片</button>			 
 		</div>
 		<div class="row">
@@ -35,7 +32,7 @@
   				</div>	 
 		</div>
 		<div class="row">
-			 <button type="button" class="btn btn-primary" onclick="distinguishImage()">识别图片</button>			 
+			 <button type="button" class="btn btn-primary" onclick="faceImage()">验证人脸</button>			 
 		</div>
 		<input type="hidden" value="" id="mediaId">
 	</div>
@@ -104,13 +101,9 @@ $(function (){
     });
 } 
 
-//识别图片
-function distinguishImage(){
-	var mtype=$("#mtype").val();
-	if(mtype==null||mtype==""){
-		alert("请输入类型");
-		return;
-	}
+//校验人脸
+function faceImage(){
+	
 	var mediaId=$("#mediaId").val();
 	if(mediaId==null||mediaId==""){
 		alert("请上传图片");
@@ -119,8 +112,8 @@ function distinguishImage(){
 	$.ajax({
 		 type: "POST",
 		 async:true,
-		 url: '<%=request.getContextPath()%>/distinguishImage',
-		 data:{"mediaId":mediaId,"mtype":mtype},
+		 url: '<%=request.getContextPath()%>/faceSearch',
+		 data:{"mediaId":mediaId},
 		 dataType: "json",
 		  success: function (data) {			 
 			  alert("识别内容:"+JSON.stringify(data));

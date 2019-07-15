@@ -112,9 +112,23 @@ public class AiFaceUtil {
 		HashMap<String, String> options = new HashMap<String, String>();
 		options.put("quality_control", "NORMAL");
 		options.put("liveness_control", "LOW");
+		JSONObject jsobj1 = new JSONObject();
 		// 人脸注册
 		JSONObject res = client.search(image.getImage(), image.getImageType(), groupId, options);
-		return res.toString(2);
+		JSONObject result = res.getJSONObject("result");
+		JSONArray user_list = result.getJSONArray("user_list");
+		for (int i = 0; i < user_list.length(); i++) {
+			JSONObject job = user_list.getJSONObject(i);// 把每一个对象转成json对象
+			double jsonId = (double) job.get("score"); // 得到每个对象中的id值
+			int score = (int) jsonId;
+			if (score > 80) {
+				jsobj1.put("message", "相似度" + score + "%,是同一个人");
+			} else {
+				jsobj1.put("message", "相似度只有" + score + "%,不是同一个人");
+			}
+			System.out.println(jsonId);
+		}
+		return jsobj1.toString(2);
 	}
 
 	/**
@@ -137,5 +151,4 @@ public class AiFaceUtil {
 		JSONObject res = client.search(imageU.getImage(), imageU.getImageType(), groupIdList, options);
 		return res.toString(2);
 	}
-
 }

@@ -22,11 +22,8 @@ import com.jenkin.wx.pojo.TemporaryResources;
 import com.jenkin.wx.service.WeChatService;
 import com.jenkin.wx.util.CommonUtil;
 import com.lujian.facelogin.AiFaceObject;
+import com.lujian.facelogin.AiFaceUtil;
 import com.lujian.facelogin.Base64Convert;
-import com.lujian.facelogin.FaceDetection;
-import com.lujian.facelogin.FaceGroup;
-import com.lujian.facelogin.FaceRegistration;
-import com.lujian.facelogin.FaceSearch;
 import com.lujian.image.ApiOrcUtil;
 
 @Controller
@@ -151,13 +148,13 @@ public class ArtificialIntelligenceController {
 		image.setImageType("BASE64");
 		AipFace client = AiFaceObject.getClient();
 		String groupId = "ceshi";
-		FaceGroup.FaceGrouption(client, groupId);// 查询是否存在数组
+		AiFaceUtil.FaceGrouption(client, groupId);// 查询是否存在数组
 		String userId = Base64Convert.getUUID32();
 		File f = new File(realPah);
 		if (f.exists()) {
-			message = FaceDetection.Facedetection(client, image);// 检测照片是否是对的
+			message = AiFaceUtil.Facedetection(client, image);// 检测照片是否是对的
 			if (!message.equals("照片不对，需要生活照")) {// 对的 上传到百度云
-				message = FaceRegistration.Faceregistrtion(client, groupId, userId, image);
+				message = AiFaceUtil.Faceregistrtion(client, groupId, userId, image);
 			} else {
 				JSONObject jsobj1 = new JSONObject();
 				jsobj1.put("message", "照片不对，需要生活照");
@@ -209,9 +206,9 @@ public class ArtificialIntelligenceController {
 		String userId = Base64Convert.getUUID32();
 		File f = new File(realPah);
 		if (f.exists()) {
-			message = FaceDetection.Facedetection(client, image);// 检测照片是否是对的
+			message = AiFaceUtil.Facedetection(client, image);// 检测照片是否是对的
 			if (!message.equals("照片不对，需要生活照")) {// 对的 与百度云上面进行验证
-				message = FaceSearch.Faceregistrtion(client, groupId, image);
+				message = AiFaceUtil.Faceregistrtion(client, groupId, image);
 			} else {
 				JSONObject jsobj1 = new JSONObject();
 				jsobj1.put("message", "照片不对，需要生活照");

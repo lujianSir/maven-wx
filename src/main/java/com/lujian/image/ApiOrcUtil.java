@@ -1,4 +1,4 @@
-package com.jenkin.wx.util;
+package com.lujian.image;
 
 import java.util.HashMap;
 

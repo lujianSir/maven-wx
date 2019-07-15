@@ -20,13 +20,13 @@ import com.baidu.aip.face.AipFace;
 import com.jenkin.wx.pojo.Image;
 import com.jenkin.wx.pojo.TemporaryResources;
 import com.jenkin.wx.service.WeChatService;
-import com.jenkin.wx.util.ApiOrcUtil;
 import com.jenkin.wx.util.CommonUtil;
 import com.lujian.facelogin.AiFaceObject;
 import com.lujian.facelogin.Base64Convert;
 import com.lujian.facelogin.FaceDetection;
 import com.lujian.facelogin.FaceRegistration;
 import com.lujian.facelogin.FaceSearch;
+import com.lujian.image.ApiOrcUtil;
 
 @Controller
 public class ArtificialIntelligenceController {
@@ -186,6 +186,12 @@ public class ArtificialIntelligenceController {
 		return modelAndView;
 	}
 
+	/**
+	 * 人脸识别
+	 * 
+	 * @param mediaId
+	 * @return
+	 */
 	@RequestMapping(value = "/faceSearch", method = RequestMethod.POST, produces = { "application/text;charset=UTF-8" })
 	@ResponseBody
 	public String faceSearch(String mediaId) {

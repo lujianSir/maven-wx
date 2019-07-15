@@ -24,6 +24,7 @@ import com.jenkin.wx.util.CommonUtil;
 import com.lujian.facelogin.AiFaceObject;
 import com.lujian.facelogin.Base64Convert;
 import com.lujian.facelogin.FaceDetection;
+import com.lujian.facelogin.FaceGroup;
 import com.lujian.facelogin.FaceRegistration;
 import com.lujian.facelogin.FaceSearch;
 import com.lujian.image.ApiOrcUtil;
@@ -150,6 +151,7 @@ public class ArtificialIntelligenceController {
 		image.setImageType("BASE64");
 		AipFace client = AiFaceObject.getClient();
 		String groupId = "ceshi";
+		FaceGroup.FaceGrouption(client, groupId);// 查询是否存在数组
 		String userId = Base64Convert.getUUID32();
 		File f = new File(realPah);
 		if (f.exists()) {

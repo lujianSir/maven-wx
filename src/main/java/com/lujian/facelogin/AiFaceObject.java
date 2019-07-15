@@ -5,9 +5,9 @@ import com.baidu.aip.face.AipFace;
 public class AiFaceObject {
 
 	// 设置APPID/AK/SK
-	public static final String APP_ID = "16776180";
-	public static final String API_KEY = "jRRed17yzZTkueGwAHMQvyHT";
-	public static final String SECRET_KEY = "eBzQjCyWxUfsKj8ht3aCWGTG1gCZUaPF";
+	public static final String APP_ID = "16808331";
+	public static final String API_KEY = "Lx1u64krGDhGmuIRCIgwhqM8";
+	public static final String SECRET_KEY = "GeyiUxkw72OfcR4H1Yv0BtjXyYKtEHAh";
 	// 这上面的东西在你申请百度接口的时候 都会给的
 
 	// 创建一个aipface对象

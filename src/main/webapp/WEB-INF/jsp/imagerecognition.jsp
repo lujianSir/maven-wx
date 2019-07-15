@@ -60,7 +60,8 @@ $(function (){
 	        success: function(res) {
 	            // 以键值对的形式返回，可用的api值true，不可用为false
 	            // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
-	       		alert(JSON.stringify(res));
+	       		//alert(JSON.stringify(res));
+	       		  alert("提示:1.要输入类型;2.点击上传图片,目前只支持身份证图片、车牌图片,保证图片清晰;3.点击识别按钮，进行识别")
 	        }
 	    });
 	

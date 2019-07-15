@@ -44,6 +44,7 @@
 
 <script type="text/javascript">
 
+
 //初始化
 $(function (){	
 	wx.config({
@@ -60,7 +61,8 @@ $(function (){
 	        success: function(res) {
 	            // 以键值对的形式返回，可用的api值true，不可用为false
 	            // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
-	       		alert(JSON.stringify(res));
+	            alert("提示:1.点击图片按钮，选择图片;2.点击注册按钮,注册图片,如果注册过一次就不需要注册了;3.点击验证按钮，进行跳转")
+	       		//alert(JSON.stringify(res));
 	        }
 	    });
 	

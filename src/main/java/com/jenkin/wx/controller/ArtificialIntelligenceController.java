@@ -24,7 +24,7 @@ import com.jenkin.wx.util.CommonUtil;
 import com.lujian.facelogin.AiFaceObject;
 import com.lujian.facelogin.AiFaceUtil;
 import com.lujian.facelogin.Base64Convert;
-import com.lujian.image.ApiOrcUtil;
+import com.lujian.orc.ApiOrcUtil;
 
 @Controller
 public class ArtificialIntelligenceController {

@@ -9,7 +9,7 @@ import org.json.JSONObject;
 import com.baidu.aip.ocr.AipOcr;
 
 /**
- * 人工智能
+ * 识别图片中的文字
  * 
  * @author Administrator
  *

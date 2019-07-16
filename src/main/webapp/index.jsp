@@ -48,13 +48,18 @@
 		</div>
 		
 		<div class="row">
-			<div class="col-md-6">点击人工智能识别图片页面</div>
-  			<div class="col-md-6"><input type="button" onclick="jumpArtificial()" value="跳转智能识别图片地址" > </div>
+			<div class="col-md-6">点击识别图片文字页面</div>
+  			<div class="col-md-6"><input type="button" onclick="jumpArtificial()" value="跳转智能识别文字地址" > </div>
 		</div>
 		
 		<div class="row">
 			<div class="col-md-6">点击人脸识别页面</div>
   			<div class="col-md-6"><input type="button" onclick="jumpFace()" value="跳转人脸识别地址" > </div>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-6">点击图像内容识别页面</div>
+  			<div class="col-md-6"><input type="button" onclick="jumpImageClassify()" value="跳转图像内容识别地址" > </div>
 		</div>
 	</div>
 
@@ -84,5 +89,8 @@
 	}
 	function jumpFace(){
 		window.location.href='<%=request.getContextPath()%>/inintFace';
+	}
+	function jumpImageClassify(){
+		window.location.href='<%=request.getContextPath()%>/inintImageClassify';
 	}
 </script>

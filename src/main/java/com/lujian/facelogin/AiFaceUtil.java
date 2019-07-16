@@ -10,6 +10,12 @@ import com.baidu.aip.face.AipFace;
 import com.baidu.aip.face.MatchRequest;
 import com.jenkin.wx.pojo.Image;
 
+/**
+ * 人脸识别，比较图片相似度
+ * 
+ * @author Administrator
+ *
+ */
 public class AiFaceUtil {
 
 	/**

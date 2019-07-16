@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.baidu.aip.face.AipFace;
+import com.baidu.aip.imageclassify.AipImageClassify;
 import com.jenkin.wx.pojo.Image;
 import com.jenkin.wx.pojo.TemporaryResources;
 import com.jenkin.wx.service.WeChatService;
@@ -24,6 +25,8 @@ import com.jenkin.wx.util.CommonUtil;
 import com.lujian.facelogin.AiFaceObject;
 import com.lujian.facelogin.AiFaceUtil;
 import com.lujian.facelogin.Base64Convert;
+import com.lujian.image.ImageClassUtil;
+import com.lujian.image.ImageClassifyObject;
 import com.lujian.orc.ApiOrcUtil;
 
 @Controller
@@ -221,4 +224,42 @@ public class ArtificialIntelligenceController {
 		System.out.println(message);
 		return message;
 	}
+
+	/**
+	 * 图像分析
+	 * 
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/inintImageClassify")
+	public ModelAndView inintImageClassify(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		ModelAndView modelAndView = new ModelAndView();
+		String accessToken = weChatService.getAccessToken();
+		Map<String, Object> map = CommonUtil.getJsapiConfig(request, accessToken);
+		modelAndView.addObject("wxsign", map);
+		modelAndView.setViewName("inintImageClassify");
+		return modelAndView;
+	}
+
+	/**
+	 * 分析图像的内容
+	 * 
+	 * @param mediaId
+	 * @return
+	 */
+	@RequestMapping(value = "/imageClassify", method = RequestMethod.POST, produces = {
+			"application/text;charset=UTF-8" })
+	@ResponseBody
+	public String imageClassify(String mediaId) {
+		String message = "";
+		TemporaryResources temporaryResources = weChatService.queryTById(mediaId);
+		String realPah = temporaryResources.getRealPath();
+		AipImageClassify client = ImageClassifyObject.getClient();
+		message = ImageClassUtil.animalDetect(client, realPah);
+		System.out.println(message);
+		return message;
+	}
+
 }

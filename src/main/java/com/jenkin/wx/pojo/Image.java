@@ -2,8 +2,8 @@ package com.jenkin.wx.pojo;
 
 public class Image {
 
-	private String image;
-	private String imageType;
+	private String image;// base64的结果
+	private String imageType;// base64
 
 	public String getImage() {
 		return image;

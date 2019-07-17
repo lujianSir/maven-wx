@@ -6,7 +6,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>动物图片内容识别</title>
+<title>人体分析</title>
 <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
  <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
@@ -22,9 +22,9 @@
 </style>
 </head>
 <body>
-	<div class="container-fluid" style="text-align: center;">	
+	<div class="container-fluid" style="text-align: center;">
 		<div class="row">
-			 <button type="button" class="btn btn-primary" onclick="chooseImage()">上传图片</button>			 
+			 <button type="button" class="btn btn-primary" onclick="chooseImage()">上传图片</button>		 
 		</div>
 		<div class="row">
 				<div id="ceshi">
@@ -32,7 +32,7 @@
   				</div>	 
 		</div>
 		<div class="row">
-			 <button type="button" class="btn btn-primary" onclick="distinguishImage()">识别图片</button>			 
+			 <button type="button" class="btn btn-primary" onclick="bodyAnalysis()">识别图片</button>			 
 		</div>
 		<input type="hidden" value="" id="mediaId">
 	</div>
@@ -58,7 +58,7 @@ $(function (){
 	            // 以键值对的形式返回，可用的api值true，不可用为false
 	            // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
 	       		//alert(JSON.stringify(res));
-	       		  alert("提示:1.点击上传图片,保证图片清晰;2.点击识别按钮，进行识别")
+	       		  alert("提示:1.点击上传图片,保证图片人物清晰;2.点击识别按钮，进行识别")
 	        }
 	    });
 	
@@ -103,7 +103,7 @@ $(function (){
 } 
 
 //识别图片
-function distinguishImage(){
+function bodyAnalysis(){
 	var mediaId=$("#mediaId").val();
 	if(mediaId==null||mediaId==""){
 		alert("请上传图片");
@@ -112,7 +112,7 @@ function distinguishImage(){
 	$.ajax({
 		 type: "POST",
 		 async:true,
-		 url: '<%=request.getContextPath()%>/imageClassify',
+		 url: '<%=request.getContextPath()%>/bodyAnalysis',
 		 data:{"mediaId":mediaId},
 		 dataType: "json",
 		  success: function (data) {			 

@@ -16,12 +16,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.baidu.aip.bodyanalysis.AipBodyAnalysis;
 import com.baidu.aip.face.AipFace;
 import com.baidu.aip.imageclassify.AipImageClassify;
 import com.jenkin.wx.pojo.Image;
 import com.jenkin.wx.pojo.TemporaryResources;
 import com.jenkin.wx.service.WeChatService;
 import com.jenkin.wx.util.CommonUtil;
+import com.lujian.body.AipBodyAnalysisObject;
+import com.lujian.body.AipBodyAnalysisUtil;
 import com.lujian.facelogin.AiFaceObject;
 import com.lujian.facelogin.AiFaceUtil;
 import com.lujian.facelogin.Base64Convert;
@@ -258,6 +261,45 @@ public class ArtificialIntelligenceController {
 		String realPah = temporaryResources.getRealPath();
 		AipImageClassify client = ImageClassifyObject.getClient();
 		message = ImageClassUtil.animalDetect(client, realPah);
+		System.out.println(message);
+		return message;
+	}
+
+
+	/**
+	 * 人体分析
+	 * 
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/inintbodyAnalysis")
+	public ModelAndView inintbodyAnalysis(HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		ModelAndView modelAndView = new ModelAndView();
+		String accessToken = weChatService.getAccessToken();
+		Map<String, Object> map = CommonUtil.getJsapiConfig(request, accessToken);
+		modelAndView.addObject("wxsign", map);
+		modelAndView.setViewName("inintbodyAnalysis");
+		return modelAndView;
+	}
+
+	/**
+	 * 人体分析结果
+	 * 
+	 * @param mediaId
+	 * @return
+	 */
+	@RequestMapping(value = "/bodyAnalysis", method = RequestMethod.POST, produces = {
+			"application/text;charset=UTF-8" })
+	@ResponseBody
+	public String bodyAnalysis(String mediaId) {
+		String message = "";
+		TemporaryResources temporaryResources = weChatService.queryTById(mediaId);
+		String realPah = temporaryResources.getRealPath();
+		AipBodyAnalysis client = AipBodyAnalysisObject.getClient();
+		message = AipBodyAnalysisUtil.sample(client, realPah);
 		System.out.println(message);
 		return message;
 	}

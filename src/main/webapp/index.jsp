@@ -58,8 +58,13 @@
 		</div>
 		
 		<div class="row">
-			<div class="col-md-6">点击图像内容识别页面</div>
-  			<div class="col-md-6"><input type="button" onclick="jumpImageClassify()" value="跳转图像内容识别地址" > </div>
+			<div class="col-md-6">点击动物图像内容识别页面</div>
+  			<div class="col-md-6"><input type="button" onclick="jumpImageClassify()" value="跳转动物图像内容识别地址" > </div>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-6">点击图像人体分析识别页面</div>
+  			<div class="col-md-6"><input type="button" onclick="jumpBodyAnalysis()" value="跳转人体分析识别地址" > </div>
 		</div>
 	</div>
 
@@ -92,5 +97,8 @@
 	}
 	function jumpImageClassify(){
 		window.location.href='<%=request.getContextPath()%>/inintImageClassify';
+	}
+	function jumpBodyAnalysis(){
+		window.location.href='<%=request.getContextPath()%>/inintbodyAnalysis';
 	}
 </script>

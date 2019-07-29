@@ -32,11 +32,12 @@ public class LuceneCreateIndex {
 	 * @param args
 	 * @throws IOException
 	 */
-	public static void main(String[] args) throws IOException {
+
+	public static void creatIndex(String dataFilePath, String indexFilePath) throws IOException {
 		// 保存word文件的路径
-		String dataDirectory = "D:\\test";
+		String dataDirectory = dataFilePath;
 		// 保存Lucene索引文件的路径
-		String indexDirectory = "D:\\testik";
+		String indexDirectory = indexFilePath;
 		File dataDir = new File(dataDirectory);
 		File indexDir = new File(indexDirectory);
 		// 创建Directory对象 ，也就是分词器对象
@@ -157,7 +158,17 @@ public class LuceneCreateIndex {
 		System.out.println("numDocs=" + indexWriter.numDocs());
 		// 关闭索引
 		indexWriter.close();
+	}
 
+	public static void main(String[] args) {
+		String dataPath = "D:\\test";
+		String indexPath = "D:\\testik";
+		try {
+			creatIndex(dataPath, indexPath);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
 

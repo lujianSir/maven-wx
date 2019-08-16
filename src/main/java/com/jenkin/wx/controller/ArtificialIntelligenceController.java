@@ -54,6 +54,7 @@ public class ArtificialIntelligenceController {
 		modelAndView.addObject("wxsign", map);
 		modelAndView.setViewName("imagerecognition");
 		return modelAndView;
+
 	}
 
 	/**
